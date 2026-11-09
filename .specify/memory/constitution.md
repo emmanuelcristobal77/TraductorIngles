@@ -85,11 +85,13 @@ usarla.
   audífonos, sin importar qué aplicación o plataforma lo genera.
 - **Idiomas**: entrada en inglés; salida en español de México. Otros pares de idiomas quedan fuera
   de alcance salvo que una spec aprobada los agregue.
-- **Ejecución local**: la app se instala y se ejecuta en la portátil de la persona usuaria. Si
-  alguna parte del procesamiento (por ejemplo, reconocimiento de voz o traducción) dependiera de un
-  servicio externo o de conexión a internet, esa dependencia DEBE declararse en la spec y aprobarse
-  explícitamente antes de implementarse.
-  TODO(EJECUCION_LOCAL): confirmar si "local" significa procesar audio y traducción sin internet.
+- **Ejecución local**: la app se instala y se ejecuta en la portátil de la persona usuaria. Por
+  defecto, el reconocimiento de voz y la traducción DEBEN procesarse en la portátil, sin internet y
+  sin que el audio ni el texto salgan del equipo. Un modo que use un servicio externo o internet
+  solo se permite si:
+  - está declarado y aprobado en una spec (hoy: modo en línea de la spec 001, RF-015a);
+  - empieza siempre apagado y la persona lo enciende a propósito, con un aviso claro;
+  - al perder la conexión, la app vuelve al procesamiento en la portátil sin dejar de traducir.
 - **Activación bajo demanda**: la persona usuaria puede activar y desactivar la traducción en
   cualquier momento, sin reiniciar la app ni la llamada o el video en curso.
 - **Plataforma objetivo**: Windows 10 o posterior en portátil.
@@ -124,4 +126,4 @@ usarla.
 - **Cumplimiento**: cada plan y cada revisión de código verifican el cumplimiento de esta
   constitución. Toda complejidad o excepción debe justificarse por escrito.
 
-**Versión**: 1.0.0 | **Ratificada**: 2026-11-08 | **Última enmienda**: 2026-11-08
+**Versión**: 1.0.1 | **Ratificada**: 2026-11-08 | **Última enmienda**: 2026-11-08
