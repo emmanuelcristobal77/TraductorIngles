@@ -280,7 +280,7 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 
 | ID | Hueco | Estado |
 |---|---|---|
-| P-01 | **Estado de la spec**: dice "Borrador". La constitución exige aprobación antes de planear o implementar. | **Abierto.** El plan se generó a petición del propietario. **Antes de `/speckit-tasks`** hay que cambiar el estado a "Aprobada" en `spec.md` y en `specs/MAPA.md`. |
+| P-01 | **Estado de la spec**: dice "Borrador". La constitución exige aprobación antes de planear o implementar. | **Resuelto** (2026-11-08): el propietario aprobó la spec; el estado es "Aprobada" en `spec.md` y en `specs/MAPA.md`. |
 | P-02 | Mover la franja con teclado. | **Resuelto** (aclaración del 2026-11-08): botón "Mover subtítulos" + flechas; también con mouse (RF-009, RF-014). |
 | P-03 | Cómo se configura la cuenta del modo en línea. | **Resuelto**: cuadro en la app y guardado cifrado (RF-015a, RF-015c, R-14). |
 | P-04 | **"Abrir desde la barra de tareas"** con la app cerrada: Windows 10 no deja que un instalador ancle programas. | **Documentado como limitación** (R-11): acceso directo en el escritorio y en el menú Inicio; botón e ícono en la barra mientras está abierta; anclar es manual. No requiere cambiar la spec. |

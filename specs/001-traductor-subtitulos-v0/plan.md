@@ -89,8 +89,8 @@ notificación, 2 cuadros (aviso y cuenta) y 9 mensajes
 ([contracts/interfaz-usuario.md](contracts/interfaz-usuario.md)).
 
 **NEEDS CLARIFICATION**: ninguno. Los huecos P-02, P-03, P-05, P-06 y P-07 quedaron resueltos por
-la aclaración del 2026-11-08. P-04 es una limitación documentada de Windows. **Sigue abierto P-01**,
-la aprobación formal de la spec ([research.md](research.md#huecos-de-la-spec-detectados-al-planear)).
+la aclaración del 2026-11-08. P-04 es una limitación documentada de Windows. P-01 (aprobación formal de la spec) quedó resuelto
+el 2026-11-08 ([research.md](research.md#huecos-de-la-spec-detectados-al-planear)).
 
 ## Revisión contra la constitución (v1.0.1)
 
@@ -98,7 +98,7 @@ la aprobación formal de la spec ([research.md](research.md#huecos-de-la-spec-de
 
 | Principio | Verificación | Resultado |
 |---|---|---|
-| **I. Spec primero** | Todo lo diseñado se rastrea a RF o CA de la spec 001, incluidos RF-004a, RF-015c, CA-015 y CA-016, que son nuevos. `specs/MAPA.md` tiene un solo propietario. **Pero la spec sigue en "Borrador"**, y la constitución pide aprobación antes de planear o implementar. | ⚠️ **Condicionado** (P-01): falta marcar la spec como "Aprobada" en `spec.md` y `MAPA.md` **antes de `/speckit-tasks`**. |
+| **I. Spec primero** | Todo lo diseñado se rastrea a RF o CA de la spec 001, incluidos RF-004a, RF-015c, CA-015 y CA-016, que son nuevos. `specs/MAPA.md` tiene un solo propietario y la spec está "Aprobada" (2026-11-08). | ✅ Cumple (P-01 resuelto). |
 | **II. Español de México** | Toda la interfaz, los cuadros y los mensajes M-01 a M-09 están en es-MX ([contrato](contracts/interfaz-usuario.md)); la traducción pasa por el glosario es-MX (R-06); se usa "mouse" y no "ratón"; la documentación está en español. | ✅ Cumple. Riesgo de calidad con *vosotros*, cubierto por las pruebas de CA-001. |
 | **III. Cero alcance fantasma** | El contrato de interfaz enumera cada elemento con su requisito: UI-06 se basa en RF-009, D-02 en RF-015a y RF-015c, y "Salir" en RF-004a. No se recuerda la posición de la franja ni hay historial. | ✅ Cumple. |
 | **IV. Los tests acompañan a la spec** | Marca `spec(...)` en cada test + `test_trazabilidad.py`, que falla si un RF o CA queda sin test; los criterios solo manuales se justifican por escrito en `solo_manuales.toml`. | ✅ Cumple. |
@@ -107,12 +107,12 @@ la aprobación formal de la spec ([research.md](research.md#huecos-de-la-spec-de
 | **Ejecución local** | Motor local por defecto, sin red (un test bloquea `socket`); modo en línea apagado al abrir, con aviso, cuenta cifrada solo en el equipo y regreso automático. | ✅ Cumple. |
 | **Activación bajo demanda / plataforma** | El loopback se abre solo con la traducción activa y se cierra al cerrar la app; Windows 10 o posterior. | ✅ Cumple. |
 
-**Resultado de la puerta**: el diseño puede continuar. **Bloqueo para `/speckit-tasks`**: P-01
-(aprobar la spec).
+**Resultado de la puerta**: el diseño puede continuar y `/speckit-tasks` ya no tiene bloqueos
+(P-01 resuelto el 2026-11-08).
 
 **Revisión después de la fase 1**: el modelo de datos (`CuentaEnLinea`, `ModoMoverFranja`, cierre
 de la app) y los contratos (UI-06, D-01, D-02, M-08, M-09, `ErrorAutenticacion`) no agregaron
-comportamiento fuera de la spec. Solo sigue abierto P-01.
+comportamiento fuera de la spec. No quedan huecos abiertos.
 
 ## Estructura del proyecto
 

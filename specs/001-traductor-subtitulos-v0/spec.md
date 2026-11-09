@@ -4,7 +4,7 @@
 
 **Creada**: 2026-11-08
 
-**Estado**: Borrador
+**Estado**: Aprobada (2026-11-08, por el propietario)
 
 **Propietario**: ver [MAPA.md](../MAPA.md)
 
