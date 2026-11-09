@@ -1,7 +1,7 @@
 # Plan de implementación: TraductorIngles v0 — subtítulos en español del audio en inglés
 
 **Rama**: `001-traductor-subtitulos-v0` | **Fecha**: 2026-11-08 (actualizado tras la aclaración del
-2026-11-08) | **Spec**: [spec.md](spec.md)
+2026-11-08 y la enmienda de la spec del 2026-11-09) | **Spec**: [spec.md](spec.md)
 
 **Entrada**: especificación de la funcionalidad en `specs/001-traductor-subtitulos-v0/spec.md`
 
@@ -51,11 +51,12 @@ Detalle de cada decisión: [research.md](research.md).
 | Validación de la cuenta | `urllib` (librería estándar) |
 | Desarrollo (no viajan en el instalador) | `pytest>=8`, `pytest-qt>=4.4`, `pyinstaller>=6.11`, `transformers` + `torch` (solo para convertir OPUS-MT, una vez) |
 
-**Almacenamiento** (todo en `%APPDATA%\TraductorIngles\`, que se borra al desinstalar):
+**Almacenamiento** (las dos carpetas se borran al desinstalar):
 
-- `ajustes.json`: un solo dato, `aviso_en_linea_aceptado` (R-13).
-- `cuenta_en_linea.bin`: clave y región cifradas con DPAPI (R-14).
-- Bitácora de errores sin contenido en `%LOCALAPPDATA%` (R-13).
+- En `%APPDATA%\TraductorIngles\`:
+  - `ajustes.json`: un solo dato, `aviso_en_linea_aceptado` (R-13).
+  - `cuenta_en_linea.bin`: clave y región cifradas con DPAPI (R-14).
+- En `%LOCALAPPDATA%\TraductorIngles\`: `errores.log`, la bitácora de errores sin contenido (R-13).
 - Nada de audio ni de texto se guarda.
 
 **Pruebas**: `pytest` + `pytest-qt`. Cada test lleva la marca `@pytest.mark.spec(...)` con los
@@ -185,7 +186,7 @@ scripts/
 
 instalador/
 ├── traductor.spec            # PyInstaller onedir
-└── traductor.iss             # Inno Setup: escritorio + menú Inicio, sin arranque automático, borra %APPDATA% al desinstalar
+└── traductor.iss             # Inno Setup: escritorio + menú Inicio, sin arranque automático, borra %APPDATA% y %LOCALAPPDATA% de la app al desinstalar
 
 modelos/                      # no se versiona (.gitignore); lo genera preparar_modelos.py
 pyproject.toml

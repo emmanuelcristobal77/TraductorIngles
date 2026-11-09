@@ -17,7 +17,7 @@ dos formas.
 | ID | Elemento | Texto visible | Nombre accesible | Mouse | Teclado | Requisito |
 |---|---|---|---|---|---|---|
 | UI-01 | Botón de traducción (desactivada) | **Activar traducción** · *Ctrl+Alt+T* | "Activar traducción, atajo Control Alt T" | Clic | Tab hasta el botón, Espacio o Enter | RF-002, RF-016 |
-| UI-01 | Botón de traducción (activa) | **Desactivar traducción** · *Ctrl+Alt+T* | "Desactivar traducción, atajo Control Alt T" | Clic | igual | RF-003 |
+| UI-01 | Botón de traducción (preparando o activa) | **Desactivar traducción** · *Ctrl+Alt+T* | "Desactivar traducción, atajo Control Alt T" | Clic | igual | RF-003 |
 | UI-02 | Indicador de estado | "Traducción desactivada" / "Preparando la traducción…" / "Traducción activa" | igual que el texto | — | solo lectura (lo anuncia el lector de pantalla) | RF-005 |
 | UI-03 | Indicador de modo | "Sin internet" / "En línea: el audio sale del equipo" | igual que el texto | — | solo lectura | RF-015a, CA-012 |
 | UI-04 | Interruptor del modo en línea | "Modo en línea" (casilla, apagada al abrir) | "Modo en línea, apagado" / "Modo en línea, encendido" | Clic | Tab, Espacio | RF-015a |
@@ -95,8 +95,8 @@ dos formas.
 
 | Elemento | Texto | Mouse | Teclado | Requisito |
 |---|---|---|---|---|
-| Ícono | Información al pasar el mouse: "TraductorIngles: traducción desactivada" / "…activa" | Clic izquierdo: muestra la ventana principal. Clic derecho: abre el menú | Win+B, flechas hasta el ícono; Enter muestra la ventana y la tecla Menú o Mayús+F10 abre el menú | RF-001, RF-005 |
-| Menú → opción 1 | "Activar traducción" / "Desactivar traducción" | Clic | Flechas + Enter | RF-002, RF-003, RF-016a |
+| Ícono | Información al pasar el mouse: "TraductorIngles: traducción desactivada" / "TraductorIngles: preparando la traducción" / "TraductorIngles: traducción activa" | Clic izquierdo: muestra la ventana principal. Clic derecho: abre el menú | Win+B, flechas hasta el ícono; Enter muestra la ventana y la tecla Menú o Mayús+F10 abre el menú | RF-001, RF-005 |
+| Menú → opción 1 | "Activar traducción" (desactivada) / "Desactivar traducción" (preparando o activa) | Clic | Flechas + Enter | RF-002, RF-003, RF-016a |
 | Menú → opción 2 | "Abrir TraductorIngles" | Clic | Flechas + Enter | RF-001 |
 | Menú → opción 3 | "Salir" | Clic | Flechas + Enter | RF-004a |
 
@@ -127,7 +127,9 @@ la persona (RF-013).
 | M-08 | El servicio rechazó la clave o la región (al capturarlas o después) | "No se pudo activar el modo en línea: revisa la clave y la región. Seguimos traduciendo sin internet." |
 | M-09 | No hay conexión al comprobar la cuenta | "No se pudo activar el modo en línea porque no hay conexión a internet. Seguimos traduciendo sin internet." |
 
-- Los mensajes M-02 a M-09 se borran solos al cabo de 10 s o cuando cambia el estado.
+- Los mensajes M-02 a M-04 y M-06 a M-09 se borran solos al cabo de 10 s o cuando cambia el
+  estado. M-05 no se borra solo: se queda mientras la app siga abierta, porque la traducción no se
+  puede activar hasta reabrirla (RF-005).
 - Ningún mensaje tapa la franja de subtítulos ni le quita el foco a otra ventana.
 
 ## 7. Instalación y accesos
@@ -139,4 +141,4 @@ la persona (RF-013).
 | Botón en la barra de tareas mientras la app está abierta | Windows (ventana principal) | RF-001 |
 | Ícono en el área de notificación mientras la app está abierta | La app (§4) | RF-001 |
 | Arranque automático con Windows | **Nunca** | RF-004 |
-| Al desinstalar | Se borran los ajustes y la cuenta guardada | RF-015a ("una vez por instalación") |
+| Al desinstalar | Se borran los ajustes, la cuenta guardada y la bitácora de errores | RF-015a ("una vez por instalación") |

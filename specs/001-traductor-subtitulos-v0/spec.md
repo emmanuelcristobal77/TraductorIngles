@@ -49,6 +49,12 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
 - P: ¿La app se puede abrir desde la barra de tareas recién instalada? → R: No, porque Windows no
   deja que un instalador la ancle. Se abre desde el escritorio o el menú Inicio; mientras está
   abierta se ve en la barra de tareas, y anclarla es opcional y manual (RF-001).
+- P: ¿Cómo comprueba una persona que Ctrl+Alt+T funcionó si un video en pantalla completa tapa la
+  ventana? → R: Por los subtítulos: al activar, el de la siguiente frase sale en el tiempo de
+  CA-002; al desactivar, desaparecen en menos de 1 s. No se agrega ningún indicador nuevo (CA-014).
+- P: ¿Qué pasa si la app no logra prepararse mientras dice "Preparando la traducción…"? → R: La
+  traducción vuelve a desactivada y se muestra un mensaje fijo con qué hacer; activar otra vez
+  solo vuelve a mostrar el mensaje (RF-005).
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -120,7 +126,8 @@ aparecen subtítulos en español.
 
 ### Historia 4 — Activar y desactivar rápido, solo cuando la persona lo decide (Prioridad: P1)
 
-La persona usuaria encuentra la app en el escritorio y/o la barra de tareas, la activa con un solo
+La persona usuaria encuentra la app en el escritorio o el menú Inicio (y, abierta, en la barra de
+tareas), la activa con un solo
 paso y la desactiva igual de fácil en cualquier momento. La traducción nunca empieza sola.
 
 **Por qué esta prioridad**: sin un acceso rápido y confiable las Historias 1–3 no sirven, sobre todo
@@ -192,7 +199,10 @@ traducción y la desactiva.
 - **RF-005**: La app DEBE indicar de forma visible si la traducción está desactivada, preparándose
   o activa. Si la persona activa la traducción mientras la app todavía se prepara para traducir, la
   app DEBE indicarlo ("Preparando la traducción…") y empezar a traducir en cuanto esté lista, sin
-  que la persona tenga que hacer nada más.
+  que la persona tenga que hacer nada más. Si la app no logra prepararse, la traducción DEBE
+  quedar desactivada y la app DEBE mostrar un mensaje que no se borra solo y que dice qué hacer
+  (RF-013). Mientras la app siga abierta, volver a activar la traducción solo vuelve a mostrar ese
+  mensaje.
 - **RF-006**: Con la traducción activa, la app DEBE captar el audio en inglés que se reproduce por
   las bocinas o audífonos de la computadora, sin importar qué aplicación o plataforma lo produce.
 - **RF-007**: La app DEBE traducir ese audio al español de México.
@@ -262,7 +272,8 @@ traducción y la desactiva.
 
 - **Estado de traducción**: desactivada, preparando o activa; empieza siempre desactivada.
   "Preparando" solo ocurre si la persona activa la traducción antes de que la app termine de
-  prepararse; en cuanto termina, pasa sola a activa.
+  prepararse; en cuanto termina, pasa sola a activa. Si la app no logra prepararse, vuelve a
+  desactivada.
 - **Modo de procesamiento**: sin internet (por defecto) o en línea (opcional, elegido por la
   persona); al abrir la app siempre empieza en sin internet.
 - **Cuenta del modo en línea**: la clave y la región del servicio de traducción en internet. Se
@@ -308,9 +319,11 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
   internet", y encender el modo en línea ya no muestra el aviso.
 - **CA-013**: Con el modo en línea encendido, al apagar el wifi aparece un aviso en español y los
   subtítulos siguen saliendo sin tener que reactivar nada.
-- **CA-014**: Con la app abierta y la ventana de una llamada o un video en pantalla completa al
-  frente, presionar Ctrl+Alt+T activa la traducción; volver a presionarlo la desactiva. En ambos
-  casos el cambio se ve en menos de 1 segundo y no hay que cambiar de ventana.
+- **CA-014**: Con la app abierta, la traducción desactivada y la ventana de una llamada o un video
+  en pantalla completa al frente, con audio en inglés sonando: presionar Ctrl+Alt+T activa la
+  traducción y el subtítulo de la siguiente frase aparece en el tiempo de CA-002; volver a
+  presionarlo la desactiva y los subtítulos desaparecen en menos de 1 segundo. En ningún caso hay
+  que cambiar de ventana.
 - **CA-015**: Con la traducción activa, minimizar la ventana principal deja los subtítulos
   saliendo; cerrarla con la X hace que los subtítulos y el ícono de la barra de tareas desaparezcan
   en menos de 1 segundo.
@@ -320,7 +333,7 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
 ## Supuestos
 
 - Un solo usuario por computadora; no hay cuentas ni inicio de sesión.
-- La computadora (portátil o de escritorio) usa Windows 10 o posterior, como fija la constitución.
+- La portátil usa Windows 10 o posterior, como fija la constitución.
 - "Accesible desde el escritorio y/o barra de tareas" se cubre con un acceso directo en el
   escritorio y en el menú Inicio, y con el botón y el ícono en la barra de tareas mientras la app
   está abierta (RF-001).
@@ -328,6 +341,9 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
   que la app no arranca sola con Windows.
 - Se traduce únicamente lo que sale por bocinas o audífonos; el micrófono queda fuera.
 - Los subtítulos muestran solo el texto en español (no el inglés original).
+- Para diagnóstico, la app anota en el equipo solo la hora y el tipo de cada error, nunca audio,
+  texto ni la clave del modo en línea; la persona no ve ni maneja esa bitácora, y se borra al
+  desinstalar.
 - Las metas de calidad y rapidez (CA-001, CA-002) aplican al modo sin internet; el modo en línea
   debe igualarlas o superarlas.
 - El modo en línea es la dependencia externa declarada y aprobada en esta spec, como exige la

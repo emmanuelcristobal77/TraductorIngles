@@ -39,6 +39,9 @@ DESACTIVADA ──────────────────────�
 - Ninguna transición toca el volumen ni la reproducción del sistema (RF-010, CA-008).
 - Un error del motor **no** cambia el estado. Muestra un mensaje (RF-013) y la persona puede
   desactivar y volver a activar.
+- Si la preparación de los modelos falla (`ErrorPreparacion`), queda marcada como fallida hasta que
+  se cierra la app: se muestra M-05 sin que se borre solo, `PREPARANDO` pasa a `DESACTIVADA` y, a
+  partir de ahí, `activar()` no cambia el estado y vuelve a mostrar M-05 (RF-005, RF-013).
 
 ## 2. ModoProcesamiento *(entidad clave de la spec)*
 
