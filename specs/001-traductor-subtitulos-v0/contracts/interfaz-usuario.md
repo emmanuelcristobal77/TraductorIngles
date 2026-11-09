@@ -130,8 +130,9 @@ la persona (RF-013).
 
 - Los mensajes M-02 a M-04 y M-06 a M-09 se borran solos al cabo de 10 s o cuando cambia el
   estado. M-05 no se borra solo: se queda mientras la app siga abierta, porque la traducción no se
-  puede activar hasta reabrirla (RF-005). También sale como aviso del ícono (§4). Mientras M-05
-  esté visible, ningún otro mensaje lo reemplaza en UI-05: los demás no se muestran.
+  puede activar hasta reabrirla (RF-005). También sale como aviso del ícono (§4). Si con M-05
+  visible sale otro mensaje (por ejemplo, M-08 al intentar el modo en línea, que exige RF-015c), ese
+  mensaje se muestra en UI-05 su tiempo normal y, al borrarse, UI-05 vuelve a mostrar M-05.
 - Ningún mensaje tapa la franja de subtítulos ni le quita el foco a otra ventana.
 
 ## 7. Instalación y accesos

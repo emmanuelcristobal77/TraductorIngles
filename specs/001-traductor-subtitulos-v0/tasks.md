@@ -99,7 +99,7 @@ app (research R-12).
   - están todos los IDs UI-01 a UI-06, D-01, D-02 y M-01 a M-09, con el texto exacto del contrato;
   - ningún mensaje contiene números de error, las palabras "error", "exception", "code" ni "ratón", ni tiene más de 160 caracteres;
   - cada control tiene nombre accesible y no está vacío.
-- [ ] T014a [P] Escribir `tests/unit/test_bitacora.py`, marcado `spec("RF-013")` (supuesto de la spec sobre la bitácora de diagnóstico, R-13), con la *fixture* `appdata_temporal`. Comprueba lo siguiente:
+- [ ] T014a [P] Escribir `tests/unit/test_bitacora.py`, marcado `spec("RF-013")` (supuesto de la spec sobre la bitácora de diagnóstico, R-13), con la *fixture* `appdata_temporal`. El docstring del módulo explica que la marca RF-013 es la más cercana y que el test cubre el supuesto de la spec sobre la bitácora de diagnóstico, que no tiene identificador propio. Comprueba lo siguiente:
   - `registrar_error("captura", ValueError("hola secreto clave-123"))` crea `%LOCALAPPDATA%\TraductorIngles\errores.log` con una línea que tiene la hora, `captura` y `ValueError`;
   - el archivo **no** contiene el texto de la excepción ("hola", "secreto" ni "clave-123");
   - si la carpeta no existe, se crea;
@@ -156,7 +156,7 @@ ventana, y cerrar con la X.
 - [ ] T021 [P] [US4] Escribir `tests/ui/test_mensajes.py`, marcado `spec("RF-013", "RF-005")`. Comprueba lo siguiente:
   - UI-05 muestra el texto de `MENSAJES` y se vacía a los 10 s (con el reloj simulado) o cuando cambia el estado;
   - M-05 no se vacía ni a los 10 s ni al cambiar el estado: con un motor falso cuyo `preparar` lanza `ErrorPreparacion` y la traducción activada (en `PREPARANDO`), UI-02 pasa a "Traducción desactivada", UI-05 muestra M-05 y, al activar otra vez, UI-02 sigue en "Traducción desactivada" y M-05 sigue visible;
-  - con M-05 visible, `mostrar_mensaje("M-08")` (o cualquier otro ID) no cambia UI-05, y a los 10 s M-05 sigue visible;
+  - con M-05 visible, `mostrar_mensaje("M-08")` muestra M-08 en UI-05 (RF-015c), y a los 10 s (con el reloj simulado) UI-05 vuelve a mostrar M-05; un cambio de estado durante esos 10 s también regresa a M-05;
   - mostrar un mensaje no le quita el foco a otra ventana.
 - [ ] T022 [P] [US4] Escribir `tests/ui/test_bandeja.py`, marcado `spec("RF-001", "RF-002", "RF-003", "RF-005", "RF-004a", "RF-014")`. Comprueba lo siguiente:
   - el aviso emergente dice "TraductorIngles: traducción desactivada", "TraductorIngles: preparando la traducción" o "TraductorIngles: traducción activa" según el estado;
@@ -184,7 +184,7 @@ ventana, y cerrar con la X.
 - [ ] T026 [P] [US4] Crear `src/traductor/ui/ventana.py` con `VentanaPrincipal(QWidget)`, título "TraductorIngles" e ícono `recursos/icono.ico`:
   - UI-01 es un `QPushButton` con el texto y el atajo de `textos.py`, `setAccessibleName` y la señal `alternar_solicitado`;
   - UI-02 es un `QLabel` de solo lectura con el nombre accesible igual a su texto;
-  - UI-05 es un `QLabel` con el nombre accesible "Mensaje" y el método `mostrar_mensaje(id)`, que borra el texto con un `QTimer` de 10 s o con el siguiente cambio de estado, salvo M-05, que se queda fijo y no lo reemplaza ningún otro mensaje (contrato §6);
+  - UI-05 es un `QLabel` con el nombre accesible "Mensaje" y el método `mostrar_mensaje(id)`, que borra el texto con un `QTimer` de 10 s o con el siguiente cambio de estado, salvo M-05, que se queda fijo: si otro mensaje sale mientras M-05 está fijo, se muestra su tiempo normal y al borrarse UI-05 vuelve a M-05 (contrato §6);
   - los colores por estado siguen la regla "cambian de texto **y** de color", con letra de 16 px o más y contraste de 4.5:1 o más;
   - el foco inicial está en UI-01;
   - `closeEvent` llama al cierre ordenado del `Controlador`, y minimizar no hace nada.
@@ -346,7 +346,7 @@ código nuevo.
 pausarlo, reanudarlo y ponerlo en pantalla completa (quickstart B6 y B7).
 
 - [ ] T052 [P] [US2] Escribir `tests/integration/test_fuente_video.py`, con las marcas `modelos` y `spec("RF-012", "CA-005")`. Alimenta el canal con `en_pausa.wav` y el reloj real, y comprueba lo siguiente:
-  - en la pausa de 10 s el último subtítulo desaparece 4 s después de mostrarse (no hay voz que reinicie el temporizador) y no sale ninguno nuevo;
+  - en la pausa de 10 s el último subtítulo desaparece 4 s después de que aparece su último bloque (no hay voz que reinicie el temporizador) y no sale ninguno nuevo;
   - al volver el habla, aparecen subtítulos otra vez.
 - [ ] T053 [P] [US2] Escribir `tests/ui/test_pantalla_completa.py`, marcado `spec("CA-006", "RF-008")`. Comprueba lo siguiente:
   - con una ventana de prueba sin bordes, a pantalla completa y con el foco, mostrar la franja no le quita el foco a esa ventana;
