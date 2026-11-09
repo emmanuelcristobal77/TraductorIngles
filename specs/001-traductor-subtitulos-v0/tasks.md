@@ -156,6 +156,7 @@ ventana, y cerrar con la X.
   - el aviso emergente dice "TraductorIngles: traducción desactivada", "TraductorIngles: preparando la traducción" o "TraductorIngles: traducción activa" según el estado;
   - el menú tiene, en este orden, "Activar traducción" (desactivada) o "Desactivar traducción" (preparando o activa), "Abrir TraductorIngles" y "Salir";
   - en `PREPARANDO`, la opción 1 lleva a `DESACTIVADA`;
+  - con `preparar` falso que lanza `ErrorPreparacion` y la ventana minimizada: al fallar, y luego al activar con la opción 1 del menú y con el atajo simulado, se llama a `showMessage` con el título "TraductorIngles" y el texto de M-05, y no se activa ninguna ventana; sin la falla, `showMessage` nunca se llama;
   - la opción 1 alterna el estado;
   - un clic izquierdo y "Abrir TraductorIngles" muestran la ventana;
   - "Salir" ejecuta el cierre ordenado.
@@ -180,7 +181,7 @@ ventana, y cerrar con la X.
   - los colores por estado siguen la regla "cambian de texto **y** de color", con letra de 16 px o más y contraste de 4.5:1 o más;
   - el foco inicial está en UI-01;
   - `closeEvent` llama al cierre ordenado del `Controlador`, y minimizar no hace nada.
-- [ ] T027 [P] [US4] Crear `src/traductor/ui/bandeja.py` con `Bandeja(QSystemTrayIcon)`. Tiene el aviso emergente de `textos.py`, el menú de 3 opciones del contrato §4, el clic izquierdo (`QSystemTrayIcon.Trigger`) que muestra la ventana, y la señal `salir_solicitado`.
+- [ ] T027 [P] [US4] Crear `src/traductor/ui/bandeja.py` con `Bandeja(QSystemTrayIcon)`. Tiene el aviso emergente de `textos.py`, el menú de 3 opciones del contrato §4, el clic izquierdo (`QSystemTrayIcon.Trigger`) que muestra la ventana, la señal `salir_solicitado` y el método `avisar(id_mensaje)`, que llama a `showMessage("TraductorIngles", MENSAJES[id_mensaje])`; un clic en el aviso (`messageClicked`) muestra la ventana.
 - [ ] T028 [P] [US4] Crear `src/traductor/ui/atajo.py` con lo siguiente:
   - `AtajoGlobal(QAbstractNativeEventFilter)`, que llama a `RegisterHotKey(hwnd_ventana, ID_ATAJO, MOD_CONTROL | MOD_ALT | MOD_NOREPEAT, 0x54)` por `ctypes`;
   - `registrar() -> bool`, que devuelve `False` si `GetLastError() == 1409`;
@@ -190,6 +191,7 @@ ventana, y cerrar con la X.
   - UI-01, la opción 1 del menú y el atajo llaman a `estado.alternar()`;
   - los observadores del estado actualizan UI-01, UI-02 y el aviso emergente;
   - si `registrar()` devuelve `False`, se muestra M-06;
+  - cada vez que se publica M-05 por una falla de preparación (al fallar y en cada intento de activar después), además de UI-05 se llama a `bandeja.avisar("M-05")` (RF-005, contrato §4);
   - `cerrar_app()` sigue el orden de [data-model.md §10](data-model.md): `EstadoTraduccion → DESACTIVADA` → ocultar la franja y el ícono → `liberar()` → cerrar los motores → `QApplication.quit`;
   - "Salir" del menú llama a `cerrar_app()`.
 - [ ] T030 [US4] Correr `pytest tests/unit tests/ui -m "not modelos"` y corregir hasta que todos los tests de T020 a T025 pasen

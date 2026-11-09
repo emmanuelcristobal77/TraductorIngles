@@ -55,6 +55,9 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
 - P: ¿Qué pasa si la app no logra prepararse mientras dice "Preparando la traducción…"? → R: La
   traducción vuelve a desactivada y se muestra un mensaje fijo con qué hacer; activar otra vez
   solo vuelve a mostrar el mensaje (RF-005).
+- P: ¿Cómo ve ese mensaje quien intenta activar con Ctrl+Alt+T o desde el ícono con la ventana
+  minimizada o tapada? → R: El mensaje también sale como aviso del ícono de la barra de tareas, sin
+  cambiar de ventana (RF-005).
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -202,7 +205,9 @@ traducción y la desactiva.
   que la persona tenga que hacer nada más. Si la app no logra prepararse, la traducción DEBE
   quedar desactivada y la app DEBE mostrar un mensaje que no se borra solo y que dice qué hacer
   (RF-013). Mientras la app siga abierta, volver a activar la traducción solo vuelve a mostrar ese
-  mensaje.
+  mensaje. Al fallar y en cada intento de activar después, el mensaje también DEBE salir como aviso
+  del ícono de la barra de tareas, para que se vea aunque la ventana esté minimizada o tapada, sin
+  cambiar de ventana.
 - **RF-006**: Con la traducción activa, la app DEBE captar el audio en inglés que se reproduce por
   las bocinas o audífonos de la computadora, sin importar qué aplicación o plataforma lo produce.
 - **RF-007**: La app DEBE traducir ese audio al español de México.

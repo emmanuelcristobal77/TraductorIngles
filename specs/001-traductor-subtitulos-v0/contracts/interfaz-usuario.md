@@ -99,6 +99,7 @@ dos formas.
 | Menú → opción 1 | "Activar traducción" (desactivada) / "Desactivar traducción" (preparando o activa) | Clic | Flechas + Enter | RF-002, RF-003, RF-016a |
 | Menú → opción 2 | "Abrir TraductorIngles" | Clic | Flechas + Enter | RF-001 |
 | Menú → opción 3 | "Salir" | Clic | Flechas + Enter | RF-004a |
+| Aviso del ícono | Título "TraductorIngles" y el texto de M-05. Solo sale cuando la app no logró prepararse: al fallar y en cada intento de activar después. Usa el aviso normal de Windows, no quita el foco a ninguna ventana y se cierra solo | Clic: muestra la ventana principal | Lo anuncia el lector de pantalla; Win+B lleva al ícono | RF-005, RF-013 |
 
 ## 5. Atajo global
 
@@ -129,7 +130,7 @@ la persona (RF-013).
 
 - Los mensajes M-02 a M-04 y M-06 a M-09 se borran solos al cabo de 10 s o cuando cambia el
   estado. M-05 no se borra solo: se queda mientras la app siga abierta, porque la traducción no se
-  puede activar hasta reabrirla (RF-005).
+  puede activar hasta reabrirla (RF-005). También sale como aviso del ícono (§4).
 - Ningún mensaje tapa la franja de subtítulos ni le quita el foco a otra ventana.
 
 ## 7. Instalación y accesos

@@ -41,7 +41,8 @@ DESACTIVADA ──────────────────────�
   desactivar y volver a activar.
 - Si la preparación de los modelos falla (`ErrorPreparacion`), queda marcada como fallida hasta que
   se cierra la app: se muestra M-05 sin que se borre solo, `PREPARANDO` pasa a `DESACTIVADA` y, a
-  partir de ahí, `activar()` no cambia el estado y vuelve a mostrar M-05 (RF-005, RF-013).
+  partir de ahí, `activar()` no cambia el estado y vuelve a mostrar M-05 (RF-005, RF-013). Cada
+  vez que se muestra M-05 por esta causa, también sale como aviso del ícono (contrato §4).
 
 ## 2. ModoProcesamiento *(entidad clave de la spec)*
 
