@@ -12,7 +12,7 @@ tareas o Ctrl+Alt+T), capta el audio que suena por las bocinas o audífonos y mu
 al español de México en una franja de subtítulos siempre visible. La franja se mueve con el mouse
 o con el teclado, y todos los controles se usan de las dos formas.
 
-El enfoque técnico es Python 3.12 con este flujo:
+El enfoque técnico es Python 3.14 con este flujo:
 
 1. Captura con **WASAPI loopback**, que no altera el audio ni usa el micrófono.
 2. Corte en frases con **Silero VAD**.
@@ -32,7 +32,8 @@ Detalle de cada decisión: [research.md](research.md).
 
 ## Contexto técnico
 
-**Lenguaje/versión**: Python 3.12 (64 bits)
+**Lenguaje/versión**: Python 3.14 (64 bits); mínimo admitido 3.12. No 3.15 todavía: `onnxruntime`
+no tiene *wheel* para Windows con esa versión (R-01).
 
 **Dependencias principales** (versiones mínimas; las exactas se fijan con `pip freeze` en
 `requirements.txt` al implementar):

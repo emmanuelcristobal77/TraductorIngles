@@ -12,7 +12,7 @@ Explica cómo preparar el entorno, correr las pruebas automáticas y validar a m
 ### A1. Requisitos previos (una sola vez)
 
 ```powershell
-winget install Python.Python.3.12
+winget install Python.Python.3.14     # no 3.15: onnxruntime aún no tiene paquete para esa versión
 winget install Microsoft.VCRedist.2015+.x64
 winget install JRSoftware.InnoSetup        # solo para generar el instalador
 ```

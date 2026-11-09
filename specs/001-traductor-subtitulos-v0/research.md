@@ -11,16 +11,20 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 
 ## R-01. Lenguaje y versión
 
-- **Decisión**: Python 3.12 (64 bits).
+- **Decisión**: Python 3.14 (64 bits); el código admite 3.12 o posterior (`requires-python >= 3.12`).
 - **Razón**: es el ecosistema con las mejores librerías de voz a texto y traducción que funcionan
   sin internet (faster-whisper, CTranslate2). Todas las dependencias elegidas publican *wheels*
-  para Windows y Python 3.12, así que no hace falta compilar nada.
+  para Windows y Python 3.14, así que no hace falta compilar nada (revisado en PyPI el
+  2026-11-09).
 - **Alternativas consideradas**:
   - *C# / .NET 8 + WPF + NAudio + Whisper.net*: instalador más ligero y más nativo, pero no hay una
     traducción sin internet madura para .NET (habría que montar Marian sobre ONNX a mano). Se
     descarta por riesgo y esfuerzo.
-  - *Python 3.13*: algunas dependencias de audio tardan en publicar *wheels*; 3.12 es la versión
-    estable con soporte más amplio.
+  - *Python 3.12*: la combinación más probada, pero ya solo recibe parches de seguridad. Sigue
+    siendo la versión mínima admitida.
+  - *Python 3.15*: se descarta por ahora porque `onnxruntime` (que faster-whisper usa para Silero
+    VAD) no publica *wheel* para Windows con 3.15 (última versión revisada: 1.31.1). Se puede
+    reconsiderar cuando lo publique.
 
 ## R-02. Captura del audio de bocinas o audífonos (RF-006, RF-010, RF-011)
 
