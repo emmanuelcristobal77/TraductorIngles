@@ -20,7 +20,7 @@ dos formas.
 | UI-01 | Botón de traducción (preparando o activa) | **Desactivar traducción** · *Ctrl+Alt+T* | "Desactivar traducción, atajo Control Alt T" | Clic | igual | RF-003 |
 | UI-02 | Indicador de estado | "Traducción desactivada" / "Preparando la traducción…" / "Traducción activa" | igual que el texto | — | solo lectura (lo anuncia el lector de pantalla) | RF-005 |
 | UI-03 | Indicador de modo | "Sin internet" / "En línea: el audio sale del equipo" | igual que el texto | — | solo lectura | RF-015a, CA-012 |
-| UI-04 | Interruptor del modo en línea | "Modo en línea" (casilla, apagada al abrir) | "Modo en línea, apagado" / "Modo en línea, encendido" | Clic | Tab, Espacio | RF-015a |
+| UI-04 | Interruptor del modo en línea | "Modo en línea" (casilla, apagada al abrir y siempre que el modo esté *sin internet*) | "Modo en línea, apagado" / "Modo en línea, encendido" | Clic | Tab, Espacio | RF-015a |
 | UI-06 | Botón de mover la franja | **Mover subtítulos** | "Mover subtítulos con las flechas" | Clic | Tab, Espacio o Enter | RF-009, RF-014 |
 | UI-05 | Zona de mensajes | Texto del catálogo §6; vacía si no hay mensaje | "Mensaje" | — | solo lectura | RF-013, RF-016a |
 
@@ -50,7 +50,7 @@ dos formas.
 | Mover con teclado | Con el modo de mover (§2.1) | RF-009 |
 | Límites | Nunca sale por completo de la pantalla | RF-009 |
 | Recordar la posición | **No** (vuelve a la posición inicial al abrir la app) | Principio III |
-| Desaparece | Con 4 s sin habla: 4 s después de lo último que ocurra entre "se mostró el subtítulo" y "se detectó voz por última vez". Al desactivar la traducción, en menos de 1 s | RF-012, CA-004 |
+| Desaparece | Con 4 s sin habla: 4 s después de lo último que ocurra entre "apareció el último bloque del subtítulo" y "se detectó voz por última vez". Mientras queden bloques por mostrar, la franja no se vacía. Al desactivar la traducción, en menos de 1 s | RF-012, CA-004 |
 
 ### 2.1 Modo de mover
 
@@ -130,7 +130,8 @@ la persona (RF-013).
 
 - Los mensajes M-02 a M-04 y M-06 a M-09 se borran solos al cabo de 10 s o cuando cambia el
   estado. M-05 no se borra solo: se queda mientras la app siga abierta, porque la traducción no se
-  puede activar hasta reabrirla (RF-005). También sale como aviso del ícono (§4).
+  puede activar hasta reabrirla (RF-005). También sale como aviso del ícono (§4). Mientras M-05
+  esté visible, ningún otro mensaje lo reemplaza en UI-05: los demás no se muestran.
 - Ningún mensaje tapa la franja de subtítulos ni le quita el foco a otra ventana.
 
 ## 7. Instalación y accesos

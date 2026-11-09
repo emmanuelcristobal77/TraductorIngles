@@ -58,6 +58,9 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
 - P: ¿Cómo ve ese mensaje quien intenta activar con Ctrl+Alt+T o desde el ícono con la ventana
   minimizada o tapada? → R: El mensaje también sale como aviso del ícono de la barra de tareas, sin
   cambiar de ventana (RF-005).
+- Corrección de redacción, sin cambio de significado (tercer `/speckit-analyze`): el escenario 5 de
+  la Historia 4 ya no dice "dado que la traducción está activa" (se contradecía con "la activa"), y
+  RF-015b queda antes que RF-015c.
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -151,8 +154,9 @@ traducción y la desactiva.
    desactivar, **entonces** la traducción se detiene y la app indica que está desactivada.
 4. **Dado** que la persona usuaria enciende la portátil o abre la app, **cuando** no ha activado la
    traducción, **entonces** la app no escucha ni traduce nada.
-5. **Dado** que la traducción está activa, **cuando** la persona usuaria la activa o desactiva,
-   **entonces** el audio que estaba escuchando no se corta, no se pausa ni cambia de volumen.
+5. **Dado** que suena audio en la computadora, **cuando** la persona usuaria activa o desactiva la
+   traducción, **entonces** el audio que estaba escuchando no se corta, no se pausa ni cambia de
+   volumen.
 6. **Dado** que la app está abierta y la persona usuaria está en la ventana de una llamada,
    **cuando** presiona Ctrl+Alt+T, **entonces** la traducción cambia de desactivada a activa (o al
    revés) sin salir de la llamada.
@@ -245,13 +249,13 @@ traducción y la desactiva.
     en un cuadro sencillo y guardarlas cifradas en el equipo, con la protección de datos de Windows
     para el usuario actual. La clave nunca se muestra completa, nunca va en el instalador y nunca
     sale del equipo, salvo hacia el propio servicio.
+- **RF-015b**: Si el modo en línea está activo y se pierde la conexión, la app DEBE avisar con un
+  mensaje breve y seguir traduciendo en modo sin internet, sin que la persona tenga que reactivar la
+  traducción.
 - **RF-015c**: Si la persona cancela el cuadro de la cuenta, o el servicio rechaza la clave o la
   región, la app DEBE quedarse en modo sin internet y mostrar un mensaje breve en español que diga
   que el modo en línea no se pudo activar. En ese caso DEBE volver a pedir la cuenta la siguiente
   vez que se encienda el modo en línea.
-- **RF-015b**: Si el modo en línea está activo y se pierde la conexión, la app DEBE avisar con un
-  mensaje breve y seguir traduciendo en modo sin internet, sin que la persona tenga que reactivar la
-  traducción.
 - **RF-016**: Mientras la app esté abierta, el atajo de teclado fijo **Ctrl+Alt+T** DEBE activar la
   traducción si está desactivada y desactivarla si está activa, desde cualquier ventana (incluida
   la de una llamada o un video en pantalla completa), sin cambiar de ventana. La app DEBE mostrar

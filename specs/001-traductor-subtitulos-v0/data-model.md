@@ -3,7 +3,8 @@
 **Spec**: [spec.md](spec.md) | **Plan**: [plan.md](plan.md) | **Fecha**: 2026-11-08
 
 La app no tiene base de datos. Todo vive en memoria mientras la app está abierta. Lo único que se
-guarda en disco es un ajuste y la cuenta cifrada del modo en línea (ver `Ajustes` y `CuentaEnLinea`). Los nombres de las entidades están en español; los
+guarda en disco es un ajuste, la cuenta cifrada del modo en línea (ver `Ajustes` y `CuentaEnLinea`)
+y la bitácora de errores sin contenido (`errores.log`, research R-13). Los nombres de las entidades están en español; los
 identificadores de código pueden quedar en inglés o en español sin acentos.
 
 ---
@@ -27,7 +28,10 @@ DESACTIVADA ──────────────────────�
      ▲                                                     │                             │
      │                 desactivar (botón, menú o Ctrl+Alt+T)                             │
      └─────────────────────────────────────────────────────┴─────────────────────────────┘
-(si los modelos ya están listos, activar va directo de DESACTIVADA a ACTIVA)
+     ▲                                                     │
+     └──────────── preparación fallida (M-05) ─────────────┘
+(si los modelos ya están listos, activar va directo de DESACTIVADA a ACTIVA;
+ tras una preparación fallida, activar ya no sale de DESACTIVADA hasta reabrir la app)
 ```
 
 **Reglas**:
@@ -42,7 +46,8 @@ DESACTIVADA ──────────────────────�
 - Si la preparación de los modelos falla (`ErrorPreparacion`), queda marcada como fallida hasta que
   se cierra la app: se muestra M-05 sin que se borre solo, `PREPARANDO` pasa a `DESACTIVADA` y, a
   partir de ahí, `activar()` no cambia el estado y vuelve a mostrar M-05 (RF-005, RF-013). Cada
-  vez que se muestra M-05 por esta causa, también sale como aviso del ícono (contrato §4).
+  vez que se muestra M-05 por esta causa, también sale como aviso del ícono (contrato §4). Ningún
+  otro mensaje (por ejemplo, M-08 o M-09 del modo en línea) reemplaza a M-05 en UI-05 (contrato §6).
 
 ## 2. ModoProcesamiento *(entidad clave de la spec)*
 
@@ -96,7 +101,9 @@ EN_LINEA ──(el servicio rechaza la cuenta guardada; M-08)──► SIN_INTER
   es el que se queda.
 - Un subtítulo nuevo **reemplaza** al anterior, así que siempre se ve lo más reciente (Historia 1,
   escenario 2).
-- Si pasan **4 s** sin un subtítulo nuevo, la franja se vacía (RF-012).
+- La franja se vacía **4 s** después de lo último que ocurra entre "apareció el último bloque del
+  subtítulo" y "se detectó voz por última vez"; mientras queden bloques por mostrar, no se vacía
+  (RF-012, [contrato §2](contracts/interfaz-usuario.md#2-franja-de-subtítulos)).
 - **No se guarda** en disco ni en ninguna bitácora (spec: "No se guarda").
 
 ---

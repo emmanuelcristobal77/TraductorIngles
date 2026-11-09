@@ -99,6 +99,11 @@ app (research R-12).
   - están todos los IDs UI-01 a UI-06, D-01, D-02 y M-01 a M-09, con el texto exacto del contrato;
   - ningún mensaje contiene números de error, las palabras "error", "exception", "code" ni "ratón", ni tiene más de 160 caracteres;
   - cada control tiene nombre accesible y no está vacío.
+- [ ] T014a [P] Escribir `tests/unit/test_bitacora.py`, marcado `spec("RF-013")` (supuesto de la spec sobre la bitácora de diagnóstico, R-13), con la *fixture* `appdata_temporal`. Comprueba lo siguiente:
+  - `registrar_error("captura", ValueError("hola secreto clave-123"))` crea `%LOCALAPPDATA%\TraductorIngles\errores.log` con una línea que tiene la hora, `captura` y `ValueError`;
+  - el archivo **no** contiene el texto de la excepción ("hola", "secreto" ni "clave-123");
+  - si la carpeta no existe, se crea;
+  - si escribir falla (por ejemplo, la ruta es un archivo de solo lectura o `open` simulado lanza `OSError`), `registrar_error` no lanza nada.
 
 ### Implementación de la base
 
@@ -125,7 +130,7 @@ app (research R-12).
   - la clase `CanalNulo` en `app.py`, con `iniciar(sesion)` y `detener()` que no hacen nada. Es la `fabrica_canal` por defecto hasta T050, para que `python -m traductor` arranque en la fase 3 sin audio ni modelos; T050 la quita. En los tests se usa la *fixture* `canal_falso`, que se le pasa al `Controlador`.
   - Mientras `CanalNulo` sea el canal, la carga en segundo plano solo llama a `estado.modelos_listos()` (todavía no hay motores reales); T050 la cambia a `MotorLocal.preparar()`.
 
-**Punto de control**: `pytest tests/unit/test_estado.py tests/unit/test_textos.py` pasa. `test_trazabilidad.py` falla y lista los RF y CA que todavía no tienen test, lo cual es lo esperado.
+**Punto de control**: `pytest tests/unit/test_estado.py tests/unit/test_textos.py tests/unit/test_bitacora.py` pasa. `test_trazabilidad.py` falla y lista los RF y CA que todavía no tienen test, lo cual es lo esperado.
 
 ---
 
@@ -151,15 +156,17 @@ ventana, y cerrar con la X.
 - [ ] T021 [P] [US4] Escribir `tests/ui/test_mensajes.py`, marcado `spec("RF-013", "RF-005")`. Comprueba lo siguiente:
   - UI-05 muestra el texto de `MENSAJES` y se vacía a los 10 s (con el reloj simulado) o cuando cambia el estado;
   - M-05 no se vacía ni a los 10 s ni al cambiar el estado: con un motor falso cuyo `preparar` lanza `ErrorPreparacion` y la traducción activada (en `PREPARANDO`), UI-02 pasa a "Traducción desactivada", UI-05 muestra M-05 y, al activar otra vez, UI-02 sigue en "Traducción desactivada" y M-05 sigue visible;
+  - con M-05 visible, `mostrar_mensaje("M-08")` (o cualquier otro ID) no cambia UI-05, y a los 10 s M-05 sigue visible;
   - mostrar un mensaje no le quita el foco a otra ventana.
-- [ ] T022 [P] [US4] Escribir `tests/ui/test_bandeja.py`, marcado `spec("RF-001", "RF-002", "RF-003", "RF-005", "RF-004a")`. Comprueba lo siguiente:
+- [ ] T022 [P] [US4] Escribir `tests/ui/test_bandeja.py`, marcado `spec("RF-001", "RF-002", "RF-003", "RF-005", "RF-004a", "RF-014")`. Comprueba lo siguiente:
   - el aviso emergente dice "TraductorIngles: traducción desactivada", "TraductorIngles: preparando la traducción" o "TraductorIngles: traducción activa" según el estado;
   - el menú tiene, en este orden, "Activar traducción" (desactivada) o "Desactivar traducción" (preparando o activa), "Abrir TraductorIngles" y "Salir";
   - en `PREPARANDO`, la opción 1 lleva a `DESACTIVADA`;
   - con `preparar` falso que lanza `ErrorPreparacion` y la ventana minimizada: al fallar, y luego al activar con la opción 1 del menú y con el atajo simulado, se llama a `showMessage` con el título "TraductorIngles" y el texto de M-05, y no se activa ninguna ventana; sin la falla, `showMessage` nunca se llama;
   - la opción 1 alterna el estado;
   - un clic izquierdo y "Abrir TraductorIngles" muestran la ventana;
-  - "Salir" ejecuta el cierre ordenado.
+  - "Salir" ejecuta el cierre ordenado;
+  - con teclado (contrato §4), simulando las señales que manda Windows: `activated(QSystemTrayIcon.Trigger)` (Enter sobre el ícono) muestra la ventana, `activated(QSystemTrayIcon.Context)` (tecla Menú o Mayús+F10) abre el menú, y en el menú abierto las flechas y Enter eligen cada una de las 3 opciones.
 - [ ] T023 [P] [US4] Escribir `tests/ui/test_atajo.py`, marcado `spec("RF-016", "RF-016a", "CA-014")`, con `RegisterHotKey` y `UnregisterHotKey` simulados. Comprueba lo siguiente:
   - se registra con `MOD_CONTROL | MOD_ALT | MOD_NOREPEAT` (`0x0001 | 0x0002 | 0x4000`) y la tecla `0x54` (`T`);
   - cada `WM_HOTKEY` (`0x0312`) alterna el estado en menos de 1 s sin activar la ventana principal;
@@ -177,7 +184,7 @@ ventana, y cerrar con la X.
 - [ ] T026 [P] [US4] Crear `src/traductor/ui/ventana.py` con `VentanaPrincipal(QWidget)`, título "TraductorIngles" e ícono `recursos/icono.ico`:
   - UI-01 es un `QPushButton` con el texto y el atajo de `textos.py`, `setAccessibleName` y la señal `alternar_solicitado`;
   - UI-02 es un `QLabel` de solo lectura con el nombre accesible igual a su texto;
-  - UI-05 es un `QLabel` con el nombre accesible "Mensaje" y el método `mostrar_mensaje(id)`, que borra el texto con un `QTimer` de 10 s o con el siguiente cambio de estado, salvo M-05, que se queda fijo (contrato §6);
+  - UI-05 es un `QLabel` con el nombre accesible "Mensaje" y el método `mostrar_mensaje(id)`, que borra el texto con un `QTimer` de 10 s o con el siguiente cambio de estado, salvo M-05, que se queda fijo y no lo reemplaza ningún otro mensaje (contrato §6);
   - los colores por estado siguen la regla "cambian de texto **y** de color", con letra de 16 px o más y contraste de 4.5:1 o más;
   - el foco inicial está en UI-01;
   - `closeEvent` llama al cierre ordenado del `Controlador`, y minimizar no hace nada.
@@ -192,7 +199,7 @@ ventana, y cerrar con la X.
   - los observadores del estado actualizan UI-01, UI-02 y el aviso emergente;
   - si `registrar()` devuelve `False`, se muestra M-06;
   - cada vez que se publica M-05 por una falla de preparación (al fallar y en cada intento de activar después), además de UI-05 se llama a `bandeja.avisar("M-05")` (RF-005, contrato §4);
-  - `cerrar_app()` sigue el orden de [data-model.md §10](data-model.md): `EstadoTraduccion → DESACTIVADA` → ocultar la franja y el ícono → `liberar()` → cerrar los motores → `QApplication.quit`;
+  - `cerrar_app()` sigue el orden de [data-model.md §10](data-model.md): `EstadoTraduccion → DESACTIVADA` → ocultar el ícono → `liberar()` → cerrar los motores → `QApplication.quit` (la franja todavía no existe; T050 agrega ocultarla en este mismo paso);
   - "Salir" del menú llama a `cerrar_app()`.
 - [ ] T030 [US4] Correr `pytest tests/unit tests/ui -m "not modelos"` y corregir hasta que todos los tests de T020 a T025 pasen
 
@@ -255,7 +262,7 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - se ven como máximo 2 líneas; un texto más largo se divide en bloques de hasta 2 líneas que se muestran uno tras otro, y el último se queda;
   - con el reloj simulado, cada bloque que no es el último dura `clamp(caracteres / 15, 1.5, 4.0)` segundos (un bloque de 15 caracteres dura 1.5 s, uno de 45 dura 3 s y uno de 90 dura 4 s), y un subtítulo nuevo descarta los bloques que falten;
   - un subtítulo nuevo reemplaza al anterior;
-  - la franja se vacía 4 s después de lo último que ocurra entre `mostrar()` y `marcar_voz()` (con el reloj simulado): sin voz, se vacía a los 4 s de mostrarse; si `marcar_voz()` llega a los 3 s, se vacía a los 7 s;
+  - la franja se vacía 4 s después de lo último que ocurra entre la aparición del último bloque y `marcar_voz()` (con el reloj simulado): sin voz, un subtítulo de un solo bloque se vacía a los 4 s de mostrarse; si `marcar_voz()` llega a los 3 s, se vacía a los 7 s; un subtítulo de 3 bloques cuyos dos primeros duran 4 s cada uno muestra los 3 bloques y se vacía a los 12 s (8 s de bloques + 4 s);
   - `ocultar_ya()` la oculta en menos de 1 s;
   - un `Subtitulo` con una `sesion` distinta de la actual se ignora;
   - se arrastra con el botón izquierdo del mouse (`qtbot.mousePress`, `mouseMove` y `mouseRelease`) y nunca sale por completo de la pantalla.
@@ -301,7 +308,7 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
 - [ ] T044 [US1] Crear `src/traductor/motores/selector.py` con la clase `SelectorMotor(local, en_linea_factory)` y los métodos `traducir(frase)` y `usar_local()`. Sus eventos son callbacks: `error_motor`, `conexion_perdida` y `cuenta_rechazada`. Por ahora solo se implementa el camino del modo `SIN_INTERNET` (contrato §4, puntos 3 y 4); el camino en línea llega en T067.
 - [ ] T045 [P] [US1] Crear `src/traductor/ui/subtitulos.py` con lo siguiente:
   - `@dataclass Subtitulo(texto: str, sesion: int, mostrado_en: float)`, donde `texto` "no [es] vacío";
-  - la clase `FranjaSubtitulos(QWidget)`, con las banderas y el estilo de T037, división en bloques de hasta 2 líneas según el ancho, con la duración por bloque del contrato §2 ("Texto largo"), un temporizador de 4 s que se reinicia con `mostrar(subtitulo, sesion_actual)` y con `marcar_voz()`, y `ocultar_ya()`;
+  - la clase `FranjaSubtitulos(QWidget)`, con las banderas y el estilo de T037, división en bloques de hasta 2 líneas según el ancho, con la duración por bloque del contrato §2 ("Texto largo"), un temporizador de 4 s que arranca cuando aparece el último bloque, se reinicia con `marcar_voz()` y no corre mientras queden bloques por mostrar, y `ocultar_ya()`;
   - arrastre con `mousePressEvent` y `mouseMoveEvent`, limitado a la geometría de la pantalla;
   - un `QTimer` de 2 s que vuelve a fijar `HWND_TOPMOST` con `SetWindowPos(..., SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)` por `ctypes`.
 - [ ] T046 [US1] Agregar el modo de mover en `src/traductor/ui/subtitulos.py` (depende de T045):
@@ -310,21 +317,21 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - `focusOutEvent` termina el modo;
   - al terminar, emite `modo_mover_terminado` y se oculta si no hay subtítulo vigente.
 - [ ] T047 [US1] Agregar UI-06 en `src/traductor/ui/ventana.py`: un `QPushButton` "Mover subtítulos" con su nombre accesible y la señal `mover_solicitado`. El orden de tabulación es UI-01 → UI-06, y al recibir `modo_mover_terminado` el foco vuelve a UI-06.
-- [ ] T048 [US1] Crear `src/traductor/canal.py` con la clase `Canal` (depende de T040 a T044 y de que T049 ya esté escrito). Arma el flujo de datos de [data-model.md](data-model.md). Su comportamiento:
+- [ ] T048 [US1] **Antes de T049** (debe fallar mientras no exista `canal.py`): escribir `tests/unit/test_flujo_datos.py`, marcado `spec("RF-008")`. Con el `Canal` y motores falsos, un `ResultadoMotor` con el texto "Me gusta el coche" llega a la franja como "Me gusta el carro".
+- [ ] T049 [US1] Crear `src/traductor/canal.py` con la clase `Canal` (depende de T040 a T044 y de que T048 ya esté escrito). Arma el flujo de datos de [data-model.md](data-model.md). Su comportamiento:
   - `iniciar(sesion)` arranca hilos para la captura, el segmentador y el selector, unidos por `queue.Queue(maxsize=…)`; si una cola se llena, se descarta la frase más vieja;
   - cada `ResultadoMotor` con texto pasa por `Glosario.aplicar()` y se convierte en un `Subtitulo`, que se entrega al hilo de Qt con una señal;
   - el callback `voz_detectada()` del segmentador se entrega al hilo de Qt con la señal `voz`, que `app.py` conecta con `FranjaSubtitulos.marcar_voz()` (T050);
   - `detener()` cierra la captura, vacía las colas y regresa en menos de 1 s;
   - un error se publica como mensaje y se registra con `bitacora.registrar_error`, sin cambiar el estado.
-- [ ] T049 [US1] **Antes de T048** (debe fallar mientras no exista `canal.py`): escribir `tests/unit/test_flujo_datos.py`, marcado `spec("RF-008")`. Con el `Canal` y motores falsos, un `ResultadoMotor` con el texto "Me gusta el coche" llega a la franja como "Me gusta el carro".
 - [ ] T050 [US1] Conectar en `src/traductor/app.py` el `Canal` real en lugar de `CanalNulo`, y borrar `CanalNulo`:
   - la carga en segundo plano llama a `MotorLocal.preparar()`;
   - el `Subtitulo` va a `FranjaSubtitulos.mostrar` con la `sesion` actual, y la señal `voz` del `Canal` va a `FranjaSubtitulos.marcar_voz()`;
   - al pasar a `DESACTIVADA` se llama a `ocultar_ya()`;
   - UI-06 se conecta con `entrar_modo_mover()`;
   - los errores se convierten en M-02 a M-05 en UI-05;
-  - `cerrar_app()` también oculta la franja.
-- [ ] T051 [US1] Correr `pytest` (incluidos los tests con la marca `modelos`) y corregir hasta que pasen todos los tests de T031 a T039 y T049
+  - `cerrar_app()` también oculta la franja, junto con el ícono (orden de [data-model.md §10](data-model.md)).
+- [ ] T051 [US1] Correr `pytest` (incluidos los tests con la marca `modelos`) y corregir hasta que pasen todos los tests de T031 a T039 y T048
 
 **Punto de control**: el MVP (Historias 4 y 1) funciona sin internet. Se valida a mano con los pasos B1 a B8, B10 a B13a, B14 y B15 del [quickstart](quickstart.md).
 
@@ -403,7 +410,7 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
   - D-01 sale al encender UI-04 con el foco en "No, seguir sin internet"; "No", Esc o cerrarlo dejan `SIN_INTERNET`, y el aviso sale otra vez la siguiente vez;
   - "Sí, usar en línea" guarda `aviso_en_linea_aceptado` y abre D-02;
   - en D-02, la clave usa `QLineEdit.Password`, "Guardar y activar" solo se habilita con los dos campos llenos y muestra "Comprobando…" mientras valida;
-  - en D-02, Cancelar o Esc dejan `SIN_INTERNET` sin mensaje; una cuenta inválida muestra M-08 y no guarda; sin red se muestra M-09 y no se guarda;
+  - en D-02, Cancelar o Esc dejan `SIN_INTERNET` sin mensaje; una cuenta inválida muestra M-08 y no guarda; sin red se muestra M-09 y no se guarda; en los tres casos (y al decir "No" en D-01), UI-04 queda apagado con el nombre accesible "Modo en línea, apagado";
   - con una cuenta válida, UI-03 dice "En línea: el audio sale del equipo" con un color de aviso distinto;
   - apagar UI-04 regresa a "Sin internet" con una sola acción;
   - después de cancelar D-02 o de una cuenta inválida, al volver a encender UI-04 ya no sale D-01 pero sí sale D-02 otra vez;
@@ -443,7 +450,7 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
   - al apagar UI-04: `selector.usar_local()` y `modo.volver_sin_internet()`;
   - `conexion_perdida` muestra M-07 y pone el modo en `SIN_INTERNET`;
   - `cuenta_rechazada` muestra M-08, llama a `cuenta.borrar()` y pone el modo en `SIN_INTERNET`;
-  - si la persona cancela D-01 o D-02, UI-04 vuelve a apagado.
+  - UI-04 vuelve a apagado (con su nombre accesible "Modo en línea, apagado") en cualquier salida que deje el modo en `SIN_INTERNET`: cancelar D-01 o D-02, M-08, M-09, `conexion_perdida` o `cuenta_rechazada`.
 - [ ] T071 Correr `pytest -m "not modelos"` y corregir hasta que todos los tests de T057 a T062 pasen
 
 **Punto de control**: el modo en línea funciona con servicios simulados. Se valida a mano con los pasos B14a y B16 a B19, con una cuenta real de Azure.
@@ -465,7 +472,7 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
   - hay entradas `[Icons]` para `{autodesktop}` y `{autoprograms}` con el nombre "TraductorIngles";
   - no hay entradas `[Registry]` con `CurrentVersion\Run` ni íconos en `{autostartup}` o `{userstartup}`;
   - `[UninstallDelete]` incluye `{userappdata}\TraductorIngles` y `{localappdata}\TraductorIngles`.
-- [ ] T075 Completar `tests/solo_manuales.toml` con los criterios que necesitan a una persona además de su test automático. `CA-001` va con la justificación "Entender el sentido de 8 de 10 frases lo juzga una persona (quickstart B4); el test automático solo comprueba que hay traducción". Agregar también, cada uno con su `justificacion` y su `paso_quickstart`, los CA cuyo test automático usa simulaciones o WAV y que se confirman a mano con fuentes reales: CA-002 (B5), CA-005 (B9), CA-006 (B6), CA-008 (B13), CA-009 (B10), CA-011 (B15), CA-013 (B17) y CA-014 (B12). (T011 ya acepta que un CA tenga test automático y además entrada en `solo_manuales.toml`; la entrada documenta la parte manual). Después, correr `pytest tests/test_trazabilidad.py` hasta que quede en verde sin ninguna entrada injustificada
+- [ ] T075 Completar `tests/solo_manuales.toml` con los criterios que necesitan a una persona además de su test automático. `CA-001` va con la justificación "Entender el sentido de 8 de 10 frases lo juzga una persona (quickstart B4); el test automático solo comprueba que hay traducción". Agregar también, cada uno con su `justificacion` y su `paso_quickstart`, los CA cuyo test automático usa simulaciones o WAV y que se confirman a mano con fuentes reales: CA-002 (B5), CA-004 (B13), CA-005 (B9), CA-006 (B6), CA-007 (B2), CA-008 (B13), CA-009 (B10), CA-010 (B14), CA-011 (B15), CA-012 (B16 a B19), CA-013 (B17), CA-014 (B12), CA-015 (B13a) y CA-016 (B14a). Así, los 16 CA quedan con su paso manual documentado. (T011 ya acepta que un CA tenga test automático y además entrada en `solo_manuales.toml`; la entrada documenta la parte manual). Después, correr `pytest tests/test_trazabilidad.py` hasta que quede en verde sin ninguna entrada injustificada
 - [ ] T076 Correr la suite completa `pytest` (con los modelos) en el equipo de referencia y dejarla en verde (Principio IV)
 - [ ] T077 Generar el instalador con `pyinstaller instalador\traductor.spec` y `iscc instalador\traductor.iss`, instalarlo en el equipo de referencia y comprobar que la app abre y queda lista para activar en menos de 10 s (CA-003, meta del plan) y que usa 1.5 GB de memoria o menos con la traducción activa (Administrador de tareas)
 - [ ] T078 Seguir los pasos B1 a B19 de la parte B del [quickstart](quickstart.md) con la app instalada y la prueba con personas nuevas (CA-003). Anotar el resultado de cada paso (cumple / no cumple y una observación) en `specs/001-traductor-subtitulos-v0/checklists/validacion-uso.md`
@@ -504,7 +511,7 @@ Fase 1 ─► Fase 2 ─► Fase 3 (US4) ─► Fase 4 (US1) ─┬─► Fase 5
 ### Oportunidades de trabajo en paralelo
 
 - **Fase 1**: T003, T004, T005 y T007.
-- **Fase 2**: T010 a T014 (tests) y luego T015 a T018 (implementación).
+- **Fase 2**: T010 a T014a (tests) y luego T015 a T018 (implementación).
 - **Fase 3**: T020 a T025 (tests) y T026 a T028 (implementación).
 - **Fase 4**: T031 a T039 (tests) y T040 a T043 y T045 (implementación).
 - **Fases 5, 6 y 7**: se pueden hacer en paralelo entre sí cuando termina la fase 4.
@@ -531,7 +538,7 @@ Tarea: "T042 src/traductor/traduccion/glosario.py"
 Tarea: "T043 src/traductor/motores/local.py"
 Tarea: "T045 src/traductor/ui/subtitulos.py"
 
-# Al final, en orden: T044 → T046 → T047 → T049 (test) → T048 → T050 → T051
+# Al final, en orden: T044 → T046 → T047 → T048 (test) → T049 → T050 → T051
 ```
 
 ## Ejemplo en paralelo: Historia 4
@@ -572,6 +579,6 @@ Tarea: "T028 src/traductor/ui/atajo.py"
 ## Notas
 
 - [P] = archivos distintos y sin dependencias pendientes.
-- `src/traductor/bitacora.py` (R-13, supuesto de la spec sobre la bitácora de diagnóstico) y `src/traductor/canal.py` (flujo de datos de data-model) están en la estructura del plan. La bitácora se rastrea a ese supuesto; `canal.py` solo separa responsabilidades y no agrega comportamiento.
+- `src/traductor/bitacora.py` (R-13, supuesto de la spec sobre la bitácora de diagnóstico) y `src/traductor/canal.py` (flujo de datos de data-model) están en la estructura del plan. La bitácora se rastrea a ese supuesto y su regla de privacidad tiene test en T014a; `canal.py` solo separa responsabilidades y no agrega comportamiento.
 - Cada RF y CA de la spec tiene al menos una tarea de test con su marca `spec(...)`. `test_trazabilidad.py` (T011) lo hace cumplir.
 - Hacer un commit al terminar cada tarea o grupo lógico, con el mensaje en español.
