@@ -1,0 +1,6 @@
+pytest>=8
+pytest-qt>=4.4
+pyinstaller>=6.11
+# Solo para convertir OPUS-MT a CTranslate2 (scripts/preparar_modelos.py), una vez:
+transformers
+torch

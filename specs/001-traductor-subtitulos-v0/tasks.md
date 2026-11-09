@@ -43,26 +43,26 @@ historia, así que tiene su propia fase transversal, sin etiqueta de historia.
 **Propósito**: crear el proyecto, conseguir los modelos y medir la latencia antes de escribir la
 app (research R-12).
 
-- [ ] T001 Crear la estructura de carpetas del plan con un `__init__.py` vacío en cada paquete: `src/traductor/`, `src/traductor/audio/`, `src/traductor/motores/`, `src/traductor/traduccion/`, `src/traductor/ui/`, `src/traductor/recursos/`, `tests/unit/`, `tests/integration/`, `tests/ui/`, `tests/fixtures/audio/`, `scripts/` e `instalador/`
-- [ ] T002 Crear `pyproject.toml`: paquete `traductor` con diseño `src/`, `requires-python = ">=3.12"` y configuración de pytest con `testpaths = ["tests"]`, `qt_api = "pyside6"` y los marcadores `spec(*ids): identificadores RF/CA de spec.md que cubre el test` y `modelos: necesita los modelos descargados en modelos/`
-- [ ] T003 [P] Crear `requirements.txt` con las versiones mínimas del plan (`PyAudioWPatch>=0.2.12`, `soxr>=0.5`, `pycaw>=20240210`, `numpy>=2.0`, `faster-whisper>=1.1`, `ctranslate2>=4.5`, `sentencepiece>=0.2`, `PySide6>=6.8`, `azure-cognitiveservices-speech>=1.41`) y `requirements-dev.txt` con `pytest>=8`, `pytest-qt>=4.4`, `pyinstaller>=6.11`, `transformers` y `torch` (estos dos solo para convertir OPUS-MT)
-- [ ] T004 [P] Crear `.gitignore` con `modelos/`, `.venv/`, `build/`, `dist/`, `__pycache__/` y `*.log`
-- [ ] T005 [P] Crear `src/traductor/recursos/icono.ico`, un ícono genérico propio (sin marcas) en 16, 32, 48 y 256 px, para la ventana, el área de notificación y el instalador
-- [ ] T006 Escribir `scripts/preparar_modelos.py`, que debe ser idempotente: si una carpeta ya existe, no la repite. Hace tres cosas:
+- [X] T001 Crear la estructura de carpetas del plan con un `__init__.py` vacío en cada paquete: `src/traductor/`, `src/traductor/audio/`, `src/traductor/motores/`, `src/traductor/traduccion/`, `src/traductor/ui/`, `src/traductor/recursos/`, `tests/unit/`, `tests/integration/`, `tests/ui/`, `tests/fixtures/audio/`, `scripts/` e `instalador/`
+- [X] T002 Crear `pyproject.toml`: paquete `traductor` con diseño `src/`, `requires-python = ">=3.12"` y configuración de pytest con `testpaths = ["tests"]`, `qt_api = "pyside6"` y los marcadores `spec(*ids): identificadores RF/CA de spec.md que cubre el test` y `modelos: necesita los modelos descargados en modelos/`
+- [X] T003 [P] Crear `requirements.txt` con las versiones mínimas del plan (`PyAudioWPatch>=0.2.12`, `soxr>=0.5`, `pycaw>=20240210`, `numpy>=2.0`, `faster-whisper>=1.1`, `ctranslate2>=4.5`, `sentencepiece>=0.2`, `PySide6>=6.8`, `azure-cognitiveservices-speech>=1.41`) y `requirements-dev.txt` con `pytest>=8`, `pytest-qt>=4.4`, `pyinstaller>=6.11`, `transformers` y `torch` (estos dos solo para convertir OPUS-MT)
+- [X] T004 [P] Crear `.gitignore` con `modelos/`, `.venv/`, `build/`, `dist/`, `__pycache__/` y `*.log`
+- [X] T005 [P] Crear `src/traductor/recursos/icono.ico`, un ícono genérico propio (sin marcas) en 16, 32, 48 y 256 px, para la ventana, el área de notificación y el instalador
+- [X] T006 Escribir `scripts/preparar_modelos.py`, que debe ser idempotente: si una carpeta ya existe, no la repite. Hace tres cosas:
   - descarga los modelos faster-whisper multilingües `small` y `base` (CTranslate2, `int8`) a `modelos/whisper-small/` y `modelos/whisper-base/`;
   - convierte `Helsinki-NLP/opus-mt-en-es` con `ct2-transformers-converter --quantization int8` a `modelos/opus-mt-en-es-ct2/`;
   - copia `source.spm` y `target.spm` a esa misma carpeta.
-- [ ] T007 [P] Poner en `tests/fixtures/audio/` los audios de prueba (16 kHz, mono) y su `ATRIBUCION.md` con la fuente y la licencia de cada archivo:
+- [X] T007 [P] Poner en `tests/fixtures/audio/` los audios de prueba (16 kHz, mono) y su `ATRIBUCION.md` con la fuente y la licencia de cada archivo:
   - al menos 10 frases en inglés de *LibriSpeech test-clean* (CC BY 4.0), en archivos `en_frase_01.wav` a `en_frase_10.wav`, con su transcripción en `en_frases.tsv`;
   - `en_pausa.wav`: habla, 10 s de silencio y otra vez habla;
   - `en_continuo.wav`: más de 7 s de habla seguida;
   - `es_habla.wav`, `musica.wav` y `silencio.wav`, con licencia libre.
-- [ ] T008 Escribir `scripts/medir_latencia.py --modelo {small,base}` (depende de T006 y T007). Debe funcionar solo, sin importar `src/traductor`, y hacer lo siguiente:
+- [X] T008 Escribir `scripts/medir_latencia.py --modelo {small,base}` (depende de T006 y T007). Debe funcionar solo, sin importar `src/traductor`, y hacer lo siguiente:
   - por cada `en_frase_*.wav`, medir la voz a texto con faster-whisper (`beam_size=1`, `condition_on_previous_text=False`, `cpu_threads=4`, `compute_type="int8"`) y la traducción con `ctranslate2.Translator` y `sentencepiece`;
   - sumar 0.6 s fijos por la detección del fin de la frase;
   - imprimir una tabla por etapa y el percentil 90 del total;
   - salir con código 1 si el percentil 90 pasa de 3.0 s.
-- [ ] T009 Correr `scripts/medir_latencia.py --modelo small` en el equipo de referencia (HP ZBook 15 G1). Si el percentil 90 pasa de 3.0 s, repetir con `--modelo base`. Anotar el resultado y el modelo elegido en `specs/001-traductor-subtitulos-v0/research.md`, en una subsección nueva "Resultado de la medición" dentro de R-12
+- [X] T009 Correr `scripts/medir_latencia.py --modelo small` en el equipo de referencia (HP ZBook 15 G1). Si el percentil 90 pasa de 3.0 s, repetir con `--modelo base`. Anotar el resultado y el modelo elegido en `specs/001-traductor-subtitulos-v0/research.md`, en una subsección nueva "Resultado de la medición" dentro de R-12
 
 **Punto de control**: los modelos están en `modelos/` y ya se sabe si se usa `small` o `base`.
 
@@ -76,18 +76,18 @@ app (research R-12).
 
 ### Tests de la base
 
-- [ ] T010 [P] Escribir `tests/conftest.py`. Debe registrar el marcador `spec` y dar estas *fixtures*:
+- [X] T010 [P] Escribir `tests/conftest.py`. Debe registrar el marcador `spec` y dar estas *fixtures*:
   - `appdata_temporal`, que redirige `APPDATA` y `LOCALAPPDATA` a `tmp_path` con `monkeypatch`;
   - `bloquear_red`, que reemplaza `socket.socket` por una función que lanza `AssertionError("se intentó usar la red")`;
   - `motor_falso`, una implementación de `MotorTraduccion` que devuelve resultados programados o lanza los errores que se le indiquen;
   - `canal_falso`, que registra cuántas veces se inició y se detuvo;
   - `cargar_wav(nombre)`, que devuelve un `numpy.ndarray[float32]` de 16 kHz y mono desde `tests/fixtures/audio/`.
-- [ ] T011 [P] Escribir `tests/test_trazabilidad.py`. Lee `specs/001-traductor-subtitulos-v0/spec.md` y extrae los identificadores con la expresión `\b(RF-\d{3}[a-z]?|CA-\d{3})\b`. Después recorre con `ast` todos los `tests/**/*.py` y junta los argumentos literales de `pytest.mark.spec(...)`. Falla si pasa cualquiera de estas cosas, y su mensaje nombra los identificadores afectados:
+- [X] T011 [P] Escribir `tests/test_trazabilidad.py`. Lee `specs/001-traductor-subtitulos-v0/spec.md` y extrae los identificadores con la expresión `\b(RF-\d{3}[a-z]?|CA-\d{3})\b`. Después recorre con `ast` todos los `tests/**/*.py` y junta los argumentos literales de `pytest.mark.spec(...)`. Falla si pasa cualquiera de estas cosas, y su mensaje nombra los identificadores afectados:
   - un identificador de la spec no tiene test y tampoco está en `tests/solo_manuales.toml`;
   - una entrada de `solo_manuales.toml` no tiene `justificacion`;
   - una entrada de `solo_manuales.toml` nombra un identificador que no existe en la spec.
-- [ ] T012 [P] Crear `tests/solo_manuales.toml` con la tabla `[CA-003]` y `justificacion = "La parte con 10 personas nuevas, sin instrucciones (quickstart parte B), no se puede automatizar; el test automático de T020 solo comprueba el foco inicial y que la app responde antes de cargar los modelos."`, más `paso_quickstart = "Prueba con personas nuevas"`
-- [ ] T013 [P] Escribir `tests/unit/test_estado.py`, marcado `spec("RF-004", "RF-002", "RF-003", "RF-005", "RF-015")`. Comprueba lo siguiente:
+- [X] T012 [P] Crear `tests/solo_manuales.toml` con la tabla `[CA-003]` y `justificacion = "La parte con 10 personas nuevas, sin instrucciones (quickstart parte B), no se puede automatizar; el test automático de T020 solo comprueba el foco inicial y que la app responde antes de cargar los modelos."`, más `paso_quickstart = "Prueba con personas nuevas"`
+- [X] T013 [P] Escribir `tests/unit/test_estado.py`, marcado `spec("RF-004", "RF-002", "RF-003", "RF-005", "RF-015")`. Comprueba lo siguiente:
   - `EstadoTraduccion` empieza en `DESACTIVADA` con `sesion = 0`;
   - activar con los modelos listos lleva a `ACTIVA` y sube `sesion` en 1;
   - activar con los modelos sin cargar lleva a `PREPARANDO`, y luego a `ACTIVA` en cuanto se avisa que los modelos están listos;
@@ -95,11 +95,11 @@ app (research R-12).
   - `preparacion_fallida()` desde `PREPARANDO` lleva a `DESACTIVADA`; después de eso, `activar()` deja el estado en `DESACTIVADA` y avisa a los observadores que la preparación falló (para mostrar M-05);
   - `ModoProcesamiento` empieza en `SIN_INTERNET`;
   - un error del motor no cambia el estado.
-- [ ] T014 [P] Escribir `tests/unit/test_textos.py`, marcado `spec("RF-013", "RF-014")`. Comprueba lo siguiente:
+- [X] T014 [P] Escribir `tests/unit/test_textos.py`, marcado `spec("RF-013", "RF-014")`. Comprueba lo siguiente:
   - están todos los IDs UI-01 a UI-06, D-01, D-02 y M-01 a M-09, con el texto exacto del contrato;
   - ningún mensaje contiene números de error, las palabras "error", "exception", "code" ni "ratón", ni tiene más de 160 caracteres;
   - cada control tiene nombre accesible y no está vacío.
-- [ ] T014a [P] Escribir `tests/unit/test_bitacora.py`, marcado `spec("RF-013")` (supuesto de la spec sobre la bitácora de diagnóstico, R-13), con la *fixture* `appdata_temporal`. El docstring del módulo explica que la marca RF-013 es la más cercana y que el test cubre el supuesto de la spec sobre la bitácora de diagnóstico, que no tiene identificador propio. Comprueba lo siguiente:
+- [X] T014a [P] Escribir `tests/unit/test_bitacora.py`, marcado `spec("RF-013")` (supuesto de la spec sobre la bitácora de diagnóstico, R-13), con la *fixture* `appdata_temporal`. El docstring del módulo explica que la marca RF-013 es la más cercana y que el test cubre el supuesto de la spec sobre la bitácora de diagnóstico, que no tiene identificador propio. Comprueba lo siguiente:
   - `registrar_error("captura", ValueError("hola secreto clave-123"))` crea `%LOCALAPPDATA%\TraductorIngles\errores.log` con una línea que tiene la hora, `captura` y `ValueError`;
   - el archivo **no** contiene el texto de la excepción ("hola", "secreto" ni "clave-123");
   - si la carpeta no existe, se crea;
@@ -107,23 +107,23 @@ app (research R-12).
 
 ### Implementación de la base
 
-- [ ] T015 [P] Crear `src/traductor/textos.py` con los textos del contrato, copiados literalmente de [contracts/interfaz-usuario.md](contracts/interfaz-usuario.md):
+- [X] T015 [P] Crear `src/traductor/textos.py` con los textos del contrato, copiados literalmente de [contracts/interfaz-usuario.md](contracts/interfaz-usuario.md):
   - constantes de texto visible y nombre accesible de UI-01 (sus dos textos: desactivada, y preparando o activa), UI-02 (sus tres textos), UI-03 (sus dos textos), UI-04 (sus dos nombres accesibles), UI-05 (nombre accesible "Mensaje") y UI-06;
   - los textos del menú y los tres del aviso emergente del ícono;
   - los textos de D-01 y D-02;
   - la instrucción del modo de mover: "Usa las flechas para mover los subtítulos. Enter o Esc para terminar.";
   - el diccionario `MENSAJES` con M-01 a M-09.
-- [ ] T016 [P] Crear `src/traductor/estado.py`, sin dependencias de Qt, con lo siguiente:
+- [X] T016 [P] Crear `src/traductor/estado.py`, sin dependencias de Qt, con lo siguiente:
   - `class ValorEstado(Enum)` con `DESACTIVADA`, `PREPARANDO` y `ACTIVA`;
   - `class EstadoTraduccion`, con `valor`, `sesion` y los métodos `activar()`, `desactivar()`, `alternar()`, `modelos_listos()` y `preparacion_fallida()`, más la lista de observadores `al_cambiar`. Regla: "Al abrir la app siempre vale `DESACTIVADA`", `sesion` "sube en 1 cada vez que la traducción se activa", y tras `preparacion_fallida()` ya no se puede activar mientras la app siga abierta ([data-model.md §1](data-model.md));
   - `class ModoProcesamiento`, con `valor` (`SIN_INTERNET` o `EN_LINEA`), los métodos `encender_en_linea()` y `volver_sin_internet()` y observadores. Regla: "Al abrir la app siempre vale `SIN_INTERNET`".
-- [ ] T017 [P] Crear `src/traductor/motores/base.py` con lo siguiente:
+- [X] T017 [P] Crear `src/traductor/motores/base.py` con lo siguiente:
   - el `Protocol` `MotorTraduccion`, con `nombre`, `preparar()`, `traducir(frase)` y `cerrar()`, como en [contracts/motor-traduccion.md](contracts/motor-traduccion.md);
   - `@dataclass(frozen=True) Frase`, con `audio: numpy.ndarray[float32]` ("Entre 0.3 s y 7 s de duración"), `t_fin_habla: float` (instante monotónico) y `sesion: int`;
   - `@dataclass(frozen=True) ResultadoMotor`, con `texto_es: str | None`, `motivo_descarte` (enum `NINGUNO`, `OTRO_IDIOMA`, `SIN_VOZ` o `BAJA_CONFIANZA`) y `motor` (enum `LOCAL` o `EN_LINEA`);
   - las excepciones `ErrorPreparacion`, `ErrorConexion`, `ErrorAutenticacion` y `ErrorMotor`.
-- [ ] T018 [P] Crear `src/traductor/bitacora.py` con `registrar_error(componente: str, exc: BaseException)`. Escribe en `%LOCALAPPDATA%\TraductorIngles\errores.log` solo la hora, el componente y `type(exc).__name__`, **nunca** `str(exc)`, ni audio, ni texto, ni la clave (R-13). Crea la carpeta si no existe y, si escribir falla, no lanza nada.
-- [ ] T019 Crear `src/traductor/app.py` y `src/traductor/__main__.py` (depende de T015 a T018). Deben dar lo siguiente:
+- [X] T018 [P] Crear `src/traductor/bitacora.py` con `registrar_error(componente: str, exc: BaseException)`. Escribe en `%LOCALAPPDATA%\TraductorIngles\errores.log` solo la hora, el componente y `type(exc).__name__`, **nunca** `str(exc)`, ni audio, ni texto, ni la clave (R-13). Crea la carpeta si no existe y, si escribir falla, no lanza nada.
+- [X] T019 Crear `src/traductor/app.py` y `src/traductor/__main__.py` (depende de T015 a T018). Deben dar lo siguiente:
   - `main()`, que crea el `QApplication` y el `EstadoTraduccion`;
   - la clase `Controlador`, que recibe una `fabrica_canal` (un objeto con `iniciar(sesion)` y `detener()`), la inicia al pasar a `ACTIVA` y la detiene al pasar a `DESACTIVADA`;
   - la carga en segundo plano con `QThreadPool` al abrir la app, que recibe una función de preparación. Al terminar, llama a `estado.modelos_listos()`; si recibe `ErrorPreparacion`, llama a `estado.preparacion_fallida()`, publica M-05 (fijo) y lo registra en la bitácora.
@@ -145,7 +145,7 @@ ventana, y cerrar con la X.
 
 ### Tests de la Historia 4 ⚠️ (escribir primero; deben fallar)
 
-- [ ] T020 [P] [US4] Escribir `tests/ui/test_ventana.py`, marcado `spec("RF-002", "RF-003", "RF-005", "RF-014", "RF-016", "CA-003", "CA-010", "CA-016")`. Comprueba lo siguiente:
+- [X] T020 [P] [US4] Escribir `tests/ui/test_ventana.py`, marcado `spec("RF-002", "RF-003", "RF-005", "RF-014", "RF-016", "CA-003", "CA-010", "CA-016")`. Comprueba lo siguiente:
   - UI-01 muestra "Activar traducción" con "Ctrl+Alt+T" visible y el nombre accesible del contrato, y al activar cambia a "Desactivar traducción", tanto en `PREPARANDO` como en `ACTIVA`;
   - UI-02 dice "Traducción desactivada", "Preparando la traducción…" o "Traducción activa" según el estado;
   - con la traducción activa, UI-01 y UI-02 cambian de texto **y** de color;
@@ -153,12 +153,12 @@ ventana, y cerrar con la X.
   - se activa y desactiva **solo con mouse** (`qtbot.mouseClick`) y **solo con teclado** (`qtbot.keyClick` con Espacio y con Enter);
   - la letra mide 16 px o más y el contraste del texto con el fondo es de 4.5:1 o más;
   - la ventana se muestra y acepta clics antes de que terminen de cargar los modelos (usar un motor falso que tarda 30 s en `preparar`).
-- [ ] T021 [P] [US4] Escribir `tests/ui/test_mensajes.py`, marcado `spec("RF-013", "RF-005")`. Comprueba lo siguiente:
+- [X] T021 [P] [US4] Escribir `tests/ui/test_mensajes.py`, marcado `spec("RF-013", "RF-005")`. Comprueba lo siguiente:
   - UI-05 muestra el texto de `MENSAJES` y se vacía a los 10 s (con el reloj simulado) o cuando cambia el estado;
   - M-05 no se vacía ni a los 10 s ni al cambiar el estado: con un motor falso cuyo `preparar` lanza `ErrorPreparacion` y la traducción activada (en `PREPARANDO`), UI-02 pasa a "Traducción desactivada", UI-05 muestra M-05 y, al activar otra vez, UI-02 sigue en "Traducción desactivada" y M-05 sigue visible;
   - con M-05 visible, `mostrar_mensaje("M-08")` muestra M-08 en UI-05 (RF-015c), y a los 10 s (con el reloj simulado) UI-05 vuelve a mostrar M-05; un cambio de estado durante esos 10 s también regresa a M-05;
   - mostrar un mensaje no le quita el foco a otra ventana.
-- [ ] T022 [P] [US4] Escribir `tests/ui/test_bandeja.py`, marcado `spec("RF-001", "RF-002", "RF-003", "RF-005", "RF-004a", "RF-014")`. Comprueba lo siguiente:
+- [X] T022 [P] [US4] Escribir `tests/ui/test_bandeja.py`, marcado `spec("RF-001", "RF-002", "RF-003", "RF-005", "RF-004a", "RF-014")`. Comprueba lo siguiente:
   - el aviso emergente dice "TraductorIngles: traducción desactivada", "TraductorIngles: preparando la traducción" o "TraductorIngles: traducción activa" según el estado;
   - el menú tiene, en este orden, "Activar traducción" (desactivada) o "Desactivar traducción" (preparando o activa), "Abrir TraductorIngles" y "Salir";
   - en `PREPARANDO`, la opción 1 lleva a `DESACTIVADA`;
@@ -167,41 +167,41 @@ ventana, y cerrar con la X.
   - un clic izquierdo y "Abrir TraductorIngles" muestran la ventana;
   - "Salir" ejecuta el cierre ordenado;
   - con teclado (contrato §4), simulando las señales que manda Windows: `activated(QSystemTrayIcon.Trigger)` (Enter sobre el ícono) muestra la ventana, `activated(QSystemTrayIcon.Context)` (tecla Menú o Mayús+F10) abre el menú, y en el menú abierto las flechas y Enter eligen cada una de las 3 opciones.
-- [ ] T023 [P] [US4] Escribir `tests/ui/test_atajo.py`, marcado `spec("RF-016", "RF-016a", "CA-014")`, con `RegisterHotKey` y `UnregisterHotKey` simulados. Comprueba lo siguiente:
+- [X] T023 [P] [US4] Escribir `tests/ui/test_atajo.py`, marcado `spec("RF-016", "RF-016a", "CA-014")`, con `RegisterHotKey` y `UnregisterHotKey` simulados. Comprueba lo siguiente:
   - se registra con `MOD_CONTROL | MOD_ALT | MOD_NOREPEAT` (`0x0001 | 0x0002 | 0x4000`) y la tecla `0x54` (`T`);
   - cada `WM_HOTKEY` (`0x0312`) alterna el estado en menos de 1 s sin activar la ventana principal;
   - si `RegisterHotKey` devuelve 0 con `GetLastError() == 1409`, UI-05 muestra M-06 y UI-01 y el menú del ícono siguen alternando el estado.
-- [ ] T024 [P] [US4] Escribir `tests/ui/test_cierre.py`, marcado `spec("RF-004a", "CA-015")`. Comprueba lo siguiente:
+- [X] T024 [P] [US4] Escribir `tests/ui/test_cierre.py`, marcado `spec("RF-004a", "CA-015")`. Comprueba lo siguiente:
   - con la traducción activa, `close()` de la ventana y Alt+F4 dejan el estado en `DESACTIVADA`, llaman a `canal.detener()`, ocultan el ícono, llaman a `UnregisterHotKey`, llaman a `cerrar()` de los motores y a `QApplication.quit`, en ese orden y en menos de 1 s;
   - minimizar (`showMinimized`) no cambia el estado ni detiene el canal.
-- [ ] T025 [P] [US4] Escribir `tests/unit/test_activacion_bajo_demanda.py`, marcado `spec("RF-004", "CA-007")`, con el `canal_falso`. Comprueba lo siguiente:
+- [X] T025 [P] [US4] Escribir `tests/unit/test_activacion_bajo_demanda.py`, marcado `spec("RF-004", "CA-007")`, con el `canal_falso`. Comprueba lo siguiente:
   - abrir la app y no activar nada durante 60 s simulados no inicia el canal;
   - activar lo inicia con la `sesion` nueva y desactivar lo detiene;
   - `main()` no registra ningún arranque automático: no escribe en la clave `Run` del registro ni en la carpeta Inicio.
 
 ### Implementación de la Historia 4
 
-- [ ] T026 [P] [US4] Crear `src/traductor/ui/ventana.py` con `VentanaPrincipal(QWidget)`, título "TraductorIngles" e ícono `recursos/icono.ico`:
+- [X] T026 [P] [US4] Crear `src/traductor/ui/ventana.py` con `VentanaPrincipal(QWidget)`, título "TraductorIngles" e ícono `recursos/icono.ico`:
   - UI-01 es un `QPushButton` con el texto y el atajo de `textos.py`, `setAccessibleName` y la señal `alternar_solicitado`;
   - UI-02 es un `QLabel` de solo lectura con el nombre accesible igual a su texto;
   - UI-05 es un `QLabel` con el nombre accesible "Mensaje" y el método `mostrar_mensaje(id)`, que borra el texto con un `QTimer` de 10 s o con el siguiente cambio de estado, salvo M-05, que se queda fijo: si otro mensaje sale mientras M-05 está fijo, se muestra su tiempo normal y al borrarse UI-05 vuelve a M-05 (contrato §6);
   - los colores por estado siguen la regla "cambian de texto **y** de color", con letra de 16 px o más y contraste de 4.5:1 o más;
   - el foco inicial está en UI-01;
   - `closeEvent` llama al cierre ordenado del `Controlador`, y minimizar no hace nada.
-- [ ] T027 [P] [US4] Crear `src/traductor/ui/bandeja.py` con `Bandeja(QSystemTrayIcon)`. Tiene el aviso emergente de `textos.py`, el menú de 3 opciones del contrato §4, el clic izquierdo (`QSystemTrayIcon.Trigger`) que muestra la ventana, la señal `salir_solicitado` y el método `avisar(id_mensaje)`, que llama a `showMessage("TraductorIngles", MENSAJES[id_mensaje])`; un clic en el aviso (`messageClicked`) muestra la ventana.
-- [ ] T028 [P] [US4] Crear `src/traductor/ui/atajo.py` con lo siguiente:
+- [X] T027 [P] [US4] Crear `src/traductor/ui/bandeja.py` con `Bandeja(QSystemTrayIcon)`. Tiene el aviso emergente de `textos.py`, el menú de 3 opciones del contrato §4, el clic izquierdo (`QSystemTrayIcon.Trigger`) que muestra la ventana, la señal `salir_solicitado` y el método `avisar(id_mensaje)`, que llama a `showMessage("TraductorIngles", MENSAJES[id_mensaje])`; un clic en el aviso (`messageClicked`) muestra la ventana.
+- [X] T028 [P] [US4] Crear `src/traductor/ui/atajo.py` con lo siguiente:
   - `AtajoGlobal(QAbstractNativeEventFilter)`, que llama a `RegisterHotKey(hwnd_ventana, ID_ATAJO, MOD_CONTROL | MOD_ALT | MOD_NOREPEAT, 0x54)` por `ctypes`;
   - `registrar() -> bool`, que devuelve `False` si `GetLastError() == 1409`;
   - `nativeEventFilter`, que emite `presionado` cuando llega `WM_HOTKEY` (`0x0312`) con `ID_ATAJO`;
   - `liberar()`, que llama a `UnregisterHotKey` y se puede llamar más de una vez.
-- [ ] T029 [US4] Conectar en `src/traductor/app.py` la ventana, la bandeja y el atajo con el `Controlador` (depende de T026 a T028):
+- [X] T029 [US4] Conectar en `src/traductor/app.py` la ventana, la bandeja y el atajo con el `Controlador` (depende de T026 a T028):
   - UI-01, la opción 1 del menú y el atajo llaman a `estado.alternar()`;
   - los observadores del estado actualizan UI-01, UI-02 y el aviso emergente;
   - si `registrar()` devuelve `False`, se muestra M-06;
   - cada vez que se publica M-05 por una falla de preparación (al fallar y en cada intento de activar después), además de UI-05 se llama a `bandeja.avisar("M-05")` (RF-005, contrato §4);
   - `cerrar_app()` sigue el orden de [data-model.md §10](data-model.md): `EstadoTraduccion → DESACTIVADA` → ocultar el ícono → `liberar()` → cerrar los motores → `QApplication.quit` (la franja todavía no existe; T050 agrega ocultarla en este mismo paso);
   - "Salir" del menú llama a `cerrar_app()`.
-- [ ] T030 [US4] Correr `pytest tests/unit tests/ui -m "not modelos"` y corregir hasta que todos los tests de T020 a T025 pasen
+- [X] T030 [US4] Correr `pytest tests/unit tests/ui -m "not modelos"` y corregir hasta que todos los tests de T020 a T025 pasen
 
 **Punto de control**: la Historia 4 funciona con el canal falso: la app se activa, se desactiva y se cierra con mouse, con teclado y con el atajo.
 
@@ -217,7 +217,7 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
 
 ### Tests de la Historia 1 ⚠️ (escribir primero; deben fallar)
 
-- [ ] T031 [P] [US1] Escribir `tests/unit/test_captura.py`, marcado `spec("RF-004", "RF-006", "RF-010", "RF-011", "CA-008", "CA-009")`, con `pyaudiowpatch` simulado. Comprueba lo siguiente:
+- [X] T031 [P] [US1] Escribir `tests/unit/test_captura.py`, marcado `spec("RF-004", "RF-006", "RF-010", "RF-011", "CA-008", "CA-009")`, con `pyaudiowpatch` simulado. Comprueba lo siguiente:
   - solo se abre el dispositivo *loopback* de la salida predeterminada, nunca un dispositivo de entrada o micrófono, y nunca en modo exclusivo;
   - no se abre nada antes de `iniciar()`, y `detener()` cierra el *stream*;
   - el audio de 48 kHz estéreo (int16 o float32) sale como `FragmentoAudio` de 16 kHz, mono, float32 y con valores entre -1.0 y 1.0;
@@ -226,7 +226,7 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - sin dispositivo de salida se emite M-02, y una lectura que falla se emite como M-03;
   - con `pycaw` simulado: si la salida está silenciada (`GetMute() == 1`) o en 0 (`GetMasterVolumeLevelScalar() == 0.0`), los fragmentos salen como silencio y no se produce ninguna frase; al quitar el silencio o subir el volumen (revisión cada 0.5 s), vuelve a salir el audio; si leer el volumen lanza una excepción, el audio sale normal y no se muestra mensaje;
   - nunca se llama a un método que **cambie** el volumen o la reproducción (`SetMute`, `SetMasterVolumeLevel*` ni similares); solo se usan `GetMute` y `GetMasterVolumeLevelScalar`.
-- [ ] T032 [P] [US1] Escribir `tests/unit/test_segmentador.py`, marcado `spec("RF-012")`, con probabilidades de voz simuladas en ventanas de 512 muestras. Comprueba lo siguiente:
+- [X] T032 [P] [US1] Escribir `tests/unit/test_segmentador.py`, marcado `spec("RF-012")`, con probabilidades de voz simuladas en ventanas de 512 muestras. Comprueba lo siguiente:
   - una frase empieza cuando la probabilidad pasa de 0.5;
   - la frase termina tras 0.6 s de silencio, con `t_fin_habla` al final de la voz;
   - se corta a la fuerza a los 7 s;
@@ -234,28 +234,28 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - el silencio y el ruido con probabilidad menor de 0.5 no producen frases;
   - cada `Frase` lleva la `sesion` con la que se creó;
   - `voz_detectada()` se llama mientras hay voz, como máximo una vez cada 0.5 s, y nunca con silencio o ruido de probabilidad menor de 0.5.
-- [ ] T033 [P] [US1] Escribir `tests/unit/test_glosario.py`, marcado `spec("RF-007")`. Comprueba lo siguiente:
+- [X] T033 [P] [US1] Escribir `tests/unit/test_glosario.py`, marcado `spec("RF-007")`. Comprueba lo siguiente:
   - los pares iniciales de R-06 se reemplazan por palabra o frase completa respetando mayúsculas: ordenador→computadora, coche→carro, coches→carros, zumo→jugo, gafas→lentes, vosotros→ustedes, teléfono móvil→celular y el móvil→el celular ("Ordenador" pasa a "Computadora");
   - las coincidencias dentro de otra palabra no se tocan ("cocheras" se queda igual);
   - las palabras con varios sentidos no se tocan: "vale la pena", "vale 10 pesos", "dispositivo móvil" y "conducir una reunión" se quedan igual;
   - si dos entradas coinciden, gana la más larga ("teléfono móvil" pasa a "celular", no a "teléfono celular");
   - aplicar el glosario dos veces da el mismo resultado (idempotente);
   - si `glosario_es_mx.tsv` trae una fila mal formada, esa fila se ignora.
-- [ ] T034 [P] [US1] Escribir `tests/unit/test_motor_local.py`, marcado `spec("RF-007", "RF-012", "RF-015", "CA-011")`, con `WhisperModel` y `ctranslate2.Translator` simulados. Comprueba lo siguiente:
+- [X] T034 [P] [US1] Escribir `tests/unit/test_motor_local.py`, marcado `spec("RF-007", "RF-012", "RF-015", "CA-011")`, con `WhisperModel` y `ctranslate2.Translator` simulados. Comprueba lo siguiente:
   - si `language != "en"` o `language_probability < 0.6`, devuelve `texto_es=None` con `OTRO_IDIOMA`;
   - si `no_speech_prob > 0.6`, devuelve `SIN_VOZ`, y si `avg_logprob < -1.0`, devuelve `BAJA_CONFIANZA`;
   - si todo está bien, devuelve el texto traducido con `motor=LOCAL`;
   - con la *fixture* `bloquear_red` activa, `traducir` funciona sin intentar abrir un *socket*;
   - una excepción interna se convierte en `ErrorMotor`.
-- [ ] T035 [P] [US1] Escribir `tests/unit/test_selector_local.py`, marcado `spec("RF-013", "RF-015")`. Comprueba lo siguiente:
+- [X] T035 [P] [US1] Escribir `tests/unit/test_selector_local.py`, marcado `spec("RF-013", "RF-015")`. Comprueba lo siguiente:
   - con el modo `SIN_INTERNET`, `SelectorMotor.traducir` nunca llama a `en_linea_factory`;
   - un `ErrorMotor` del motor local emite `error_motor` y la siguiente frase se traduce normalmente.
-- [ ] T036 [P] [US1] Escribir `tests/unit/test_canal.py`, marcado `spec("CA-004", "RF-013")`, con captura, segmentador y motor falsos. Comprueba lo siguiente:
+- [X] T036 [P] [US1] Escribir `tests/unit/test_canal.py`, marcado `spec("CA-004", "RF-013")`, con captura, segmentador y motor falsos. Comprueba lo siguiente:
   - las colas tienen tamaño límite y, si se llenan, se descarta la frase más vieja;
   - un resultado de una `sesion` anterior no se muestra;
   - `detener()` vacía las colas y regresa en menos de 1 s, aunque el motor esté a mitad de una frase;
   - un `ErrorMotor` no cambia el estado y emite M-04.
-- [ ] T037 [P] [US1] Escribir `tests/ui/test_franja.py`, marcado `spec("RF-008", "RF-009", "RF-012", "CA-004", "CA-006", "CA-016")`. Comprueba lo siguiente:
+- [X] T037 [P] [US1] Escribir `tests/ui/test_franja.py`, marcado `spec("RF-008", "RF-009", "RF-012", "CA-004", "CA-006", "CA-016")`. Comprueba lo siguiente:
   - la franja tiene las banderas `FramelessWindowHint`, `WindowStaysOnTopHint` y `Tool`, más `WA_ShowWithoutActivating`, y mostrarla no le quita el foco a otra ventana;
   - la posición inicial está centrada horizontalmente, a 10 % del borde inferior de la pantalla principal;
   - el texto es blanco sobre negro al 75 % de opacidad, con letra de 28 px;
@@ -266,7 +266,7 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - `ocultar_ya()` la oculta en menos de 1 s;
   - un `Subtitulo` con una `sesion` distinta de la actual se ignora;
   - se arrastra con el botón izquierdo del mouse (`qtbot.mousePress`, `mouseMove` y `mouseRelease`) y nunca sale por completo de la pantalla.
-- [ ] T038 [P] [US1] Escribir `tests/ui/test_mover_franja.py`, marcado `spec("RF-009", "RF-014", "CA-010", "CA-016")`. Comprueba lo siguiente:
+- [X] T038 [P] [US1] Escribir `tests/ui/test_mover_franja.py`, marcado `spec("RF-009", "RF-014", "CA-010", "CA-016")`. Comprueba lo siguiente:
   - UI-06 dice "Mover subtítulos", su nombre accesible es "Mover subtítulos con las flechas" y es el último control del orden de tabulación, después de UI-01 (la prueba no supone qué hay entre los dos, para que siga valiendo cuando T069 agregue UI-04);
   - un clic **o** Enter en UI-06 entra al modo de mover: la franja se muestra aunque no haya subtítulo o la traducción esté desactivada, recibe el foco, tiene un borde amarillo de 3 px y muestra la instrucción de `textos.py`;
   - las flechas la mueven 20 px y Mayús + flecha, 100 px;
@@ -275,14 +275,14 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - si la franja pierde el foco, el modo termina igual que con Esc;
   - durante el modo también se puede arrastrar con el mouse;
   - la posición no se guarda en disco.
-- [ ] T039 [P] [US1] Escribir `tests/integration/test_flujo_sin_internet.py`, con las marcas `modelos` y `spec("RF-006", "RF-007", "RF-012", "RF-015", "CA-001", "CA-002", "CA-011")`. Usa la *fixture* `bloquear_red` en toda la prueba y alimenta el canal real con `en_frase_*.wav` en lugar de la captura. Comprueba lo siguiente:
+- [X] T039 [P] [US1] Escribir `tests/integration/test_flujo_sin_internet.py`, con las marcas `modelos` y `spec("RF-006", "RF-007", "RF-012", "RF-015", "CA-001", "CA-002", "CA-011")`. Usa la *fixture* `bloquear_red` en toda la prueba y alimenta el canal real con `en_frase_*.wav` en lugar de la captura. Comprueba lo siguiente:
   - cada frase en inglés produce un subtítulo no vacío en español, ya con el glosario aplicado;
   - el percentil 90 del tiempo entre `t_fin_habla` y el momento en que se muestra es de 3.0 s o menos;
   - `es_habla.wav`, `musica.wav` y `silencio.wav` no producen subtítulos.
 
 ### Implementación de la Historia 1
 
-- [ ] T040 [P] [US1] Crear `src/traductor/audio/captura.py`. Tiene `@dataclass FragmentoAudio(muestras: numpy.ndarray[float32], t_inicio: float)` ("16 kHz, mono, valores entre -1.0 y 1.0") y la clase `CapturaLoopback`, con `iniciar(cola)` y `detener()`. Su comportamiento:
+- [X] T040 [P] [US1] Crear `src/traductor/audio/captura.py`. Tiene `@dataclass FragmentoAudio(muestras: numpy.ndarray[float32], t_inicio: float)` ("16 kHz, mono, valores entre -1.0 y 1.0") y la clase `CapturaLoopback`, con `iniciar(cola)` y `detener()`. Su comportamiento:
   - usa `pyaudiowpatch.PyAudio().get_default_wasapi_loopback()` en modo compartido;
   - remuestrea con `soxr.resample` a 16 kHz y convierte a mono;
   - lee con tiempo límite y trata la falta de datos como silencio;
@@ -290,48 +290,48 @@ subtítulos en español de México encima de la ventana de la llamada (quickstar
   - emite M-02 si no hay salida y M-03 si la lectura falla;
   - cada 0.5 s, y al cambiar de dispositivo, **lee** con `pycaw` el silencio y el volumen maestro de la salida predeterminada; si está silenciada o en 0, entrega silencio; si la lectura falla, supone que suena (R-02);
   - nunca abre un dispositivo de entrada ni cambia el volumen.
-- [ ] T041 [P] [US1] Crear `src/traductor/audio/segmentador.py` con la clase `Segmentador`, que usa el Silero VAD (ONNX) incluido en `faster_whisper.vad`:
+- [X] T041 [P] [US1] Crear `src/traductor/audio/segmentador.py` con la clase `Segmentador`, que usa el Silero VAD (ONNX) incluido en `faster_whisper.vad`:
   - procesa ventanas de 512 muestras;
   - una frase empieza cuando la probabilidad pasa de 0.5;
   - la frase termina con 0.6 s de silencio, o a los 7 s como máximo;
   - descarta las frases de menos de 0.3 s;
   - produce `Frase(audio, t_fin_habla, sesion)`;
   - llama a un callback `voz_detectada()` como máximo una vez cada 0.5 s mientras la probabilidad pase de 0.5 (para la regla de 4 s sin habla de RF-012).
-- [ ] T042 [P] [US1] Crear `src/traductor/traduccion/glosario.py` y `src/traductor/recursos/glosario_es_mx.tsv`:
+- [X] T042 [P] [US1] Crear `src/traductor/traduccion/glosario.py` y `src/traductor/recursos/glosario_es_mx.tsv`:
   - la clase `Glosario` carga el TSV (`origen<TAB>reemplazo`, una fila por par; `origen` puede ser una frase de varias palabras) y su método `aplicar(texto)` reemplaza por palabra o frase completa con `\b`, probando primero las entradas más largas, sin distinguir mayúsculas al buscar y conservando las del original;
   - el TSV empieza con los 8 pares iniciales de R-06 y sigue la regla de "un solo sentido" de R-06.
-- [ ] T043 [P] [US1] Crear `src/traductor/motores/local.py` con la clase `MotorLocal(MotorTraduccion)`, cuyo `nombre` es `"LOCAL"`:
+- [X] T043 [P] [US1] Crear `src/traductor/motores/local.py` con la clase `MotorLocal(MotorTraduccion)`, cuyo `nombre` es `"LOCAL"`:
   - `preparar()` carga `WhisperModel(modelos/whisper-<modelo elegido en T009>, device="cpu", compute_type="int8", cpu_threads=4)` y `ctranslate2.Translator(modelos/opus-mt-en-es-ct2, inter_threads=1, intra_threads=4)` con `sentencepiece`;
-  - `traducir()` usa `beam_size=1` y `condition_on_previous_text=False`, y aplica los descartes de la tabla del contrato §2;
+  - `traducir()` usa `beam_size=1` y aplica los descartes de la tabla del contrato §2. Por la medición de T009 (research R-12), Whisper se llama en **una sola pasada** del codificador (`encode`, `detect_language` y `generate` sobre la misma salida), con el modelo `base`;
   - `cerrar()` es idempotente;
   - la ruta de `modelos/` se resuelve junto al ejecutable cuando la app está empaquetada (`sys.frozen`) o en la raíz del repositorio durante el desarrollo.
-- [ ] T044 [US1] Crear `src/traductor/motores/selector.py` con la clase `SelectorMotor(local, en_linea_factory)` y los métodos `traducir(frase)` y `usar_local()`. Sus eventos son callbacks: `error_motor`, `conexion_perdida` y `cuenta_rechazada`. Por ahora solo se implementa el camino del modo `SIN_INTERNET` (contrato §4, puntos 3 y 4); el camino en línea llega en T067.
-- [ ] T045 [P] [US1] Crear `src/traductor/ui/subtitulos.py` con lo siguiente:
+- [X] T044 [US1] Crear `src/traductor/motores/selector.py` con la clase `SelectorMotor(local, en_linea_factory)` y los métodos `traducir(frase)` y `usar_local()`. Sus eventos son callbacks: `error_motor`, `conexion_perdida` y `cuenta_rechazada`. Por ahora solo se implementa el camino del modo `SIN_INTERNET` (contrato §4, puntos 3 y 4); el camino en línea llega en T067.
+- [X] T045 [P] [US1] Crear `src/traductor/ui/subtitulos.py` con lo siguiente:
   - `@dataclass Subtitulo(texto: str, sesion: int, mostrado_en: float)`, donde `texto` "no [es] vacío";
   - la clase `FranjaSubtitulos(QWidget)`, con las banderas y el estilo de T037, división en bloques de hasta 2 líneas según el ancho, con la duración por bloque del contrato §2 ("Texto largo"), un temporizador de 4 s que arranca cuando aparece el último bloque, se reinicia con `marcar_voz()` y no corre mientras queden bloques por mostrar, y `ocultar_ya()`;
   - arrastre con `mousePressEvent` y `mouseMoveEvent`, limitado a la geometría de la pantalla;
   - un `QTimer` de 2 s que vuelve a fijar `HWND_TOPMOST` con `SetWindowPos(..., SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)` por `ctypes`.
-- [ ] T046 [US1] Agregar el modo de mover en `src/traductor/ui/subtitulos.py` (depende de T045):
+- [X] T046 [US1] Agregar el modo de mover en `src/traductor/ui/subtitulos.py` (depende de T045):
   - `entrar_modo_mover()` quita temporalmente `WA_ShowWithoutActivating`, activa la franja, pone el borde amarillo de 3 px y la instrucción;
   - `keyPressEvent` mueve la franja con las flechas (20 px, o 100 px con Mayús), con el mismo límite a la geometría de la pantalla que el arrastre de T045, y termina con Enter o Esc;
   - `focusOutEvent` termina el modo;
   - al terminar, emite `modo_mover_terminado` y se oculta si no hay subtítulo vigente.
-- [ ] T047 [US1] Agregar UI-06 en `src/traductor/ui/ventana.py`: un `QPushButton` "Mover subtítulos" con su nombre accesible y la señal `mover_solicitado`. El orden de tabulación es UI-01 → UI-06, y al recibir `modo_mover_terminado` el foco vuelve a UI-06.
-- [ ] T048 [US1] **Antes de T049** (debe fallar mientras no exista `canal.py`): escribir `tests/unit/test_flujo_datos.py`, marcado `spec("RF-008")`. Con el `Canal` y motores falsos, un `ResultadoMotor` con el texto "Me gusta el coche" llega a la franja como "Me gusta el carro".
-- [ ] T049 [US1] Crear `src/traductor/canal.py` con la clase `Canal` (depende de T040 a T044 y de que T048 ya esté escrito). Arma el flujo de datos de [data-model.md](data-model.md). Su comportamiento:
+- [X] T047 [US1] Agregar UI-06 en `src/traductor/ui/ventana.py`: un `QPushButton` "Mover subtítulos" con su nombre accesible y la señal `mover_solicitado`. El orden de tabulación es UI-01 → UI-06, y al recibir `modo_mover_terminado` el foco vuelve a UI-06.
+- [X] T048 [US1] **Antes de T049** (debe fallar mientras no exista `canal.py`): escribir `tests/unit/test_flujo_datos.py`, marcado `spec("RF-008")`. Con el `Canal` y motores falsos, un `ResultadoMotor` con el texto "Me gusta el coche" llega a la franja como "Me gusta el carro".
+- [X] T049 [US1] Crear `src/traductor/canal.py` con la clase `Canal` (depende de T040 a T044 y de que T048 ya esté escrito). Arma el flujo de datos de [data-model.md](data-model.md). Su comportamiento:
   - `iniciar(sesion)` arranca hilos para la captura, el segmentador y el selector, unidos por `queue.Queue(maxsize=…)`; si una cola se llena, se descarta la frase más vieja;
   - cada `ResultadoMotor` con texto pasa por `Glosario.aplicar()` y se convierte en un `Subtitulo`, que se entrega al hilo de Qt con una señal;
   - el callback `voz_detectada()` del segmentador se entrega al hilo de Qt con la señal `voz`, que `app.py` conecta con `FranjaSubtitulos.marcar_voz()` (T050);
   - `detener()` cierra la captura, vacía las colas y regresa en menos de 1 s;
   - un error se publica como mensaje y se registra con `bitacora.registrar_error`, sin cambiar el estado.
-- [ ] T050 [US1] Conectar en `src/traductor/app.py` el `Canal` real en lugar de `CanalNulo`, y borrar `CanalNulo`:
+- [X] T050 [US1] Conectar en `src/traductor/app.py` el `Canal` real en lugar de `CanalNulo`, y borrar `CanalNulo`:
   - la carga en segundo plano llama a `MotorLocal.preparar()`;
   - el `Subtitulo` va a `FranjaSubtitulos.mostrar` con la `sesion` actual, y la señal `voz` del `Canal` va a `FranjaSubtitulos.marcar_voz()`;
   - al pasar a `DESACTIVADA` se llama a `ocultar_ya()`;
   - UI-06 se conecta con `entrar_modo_mover()`;
   - los errores se convierten en M-02 a M-05 en UI-05;
   - `cerrar_app()` también oculta la franja, junto con el ícono (orden de [data-model.md §10](data-model.md)).
-- [ ] T051 [US1] Correr `pytest` (incluidos los tests con la marca `modelos`) y corregir hasta que pasen todos los tests de T031 a T039 y T048
+- [X] T051 [US1] Correr `pytest` (incluidos los tests con la marca `modelos`) y corregir hasta que pasen todos los tests de T031 a T039 y T048
 
 **Punto de control**: el MVP (Historias 4 y 1) funciona sin internet. Se valida a mano con los pasos B1 a B8, B10 a B13a, B14 y B15 del [quickstart](quickstart.md).
 

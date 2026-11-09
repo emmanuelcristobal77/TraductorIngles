@@ -1,0 +1,17 @@
+# origen<TAB>reemplazo. Solo palabras con un solo sentido (research R-06).
+ordenador	computadora
+coche	carro
+coches	carros
+zumo	jugo
+gafas	lentes
+vosotros	ustedes
+teléfono móvil	celular
+el móvil	el celular
+# Concordancia de género con el artículo (el ordenador → la computadora).
+el ordenador	la computadora
+un ordenador	una computadora
+ordenadores	computadoras
+los ordenadores	las computadoras
+unos ordenadores	unas computadoras
+las gafas	los lentes
+unas gafas	unos lentes

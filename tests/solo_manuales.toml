@@ -1,0 +1,6 @@
+# Criterios que necesitan a una persona además (o en lugar) de su test automático.
+# test_trazabilidad.py exige que cada entrada tenga "justificacion" y exista en spec.md.
+
+[CA-003]
+justificacion = "La parte con 10 personas nuevas, sin instrucciones (quickstart parte B), no se puede automatizar; el test automático de T020 solo comprueba el foco inicial y que la app responde antes de cargar los modelos."
+paso_quickstart = "Prueba con personas nuevas"

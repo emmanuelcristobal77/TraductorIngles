@@ -76,7 +76,7 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 
 ## R-04. Voz a texto sin internet (RF-007, RF-015, CA-001, CA-002, CA-011)
 
-- **Decisión**: **faster-whisper** con el modelo multilingüe **`small`** en `int8` sobre CPU
+- **Decisión** (actualizada por la medición de T009, ver R-12): **faster-whisper** con el modelo multilingüe **`base`** en `int8` sobre CPU; el plan original era **`small`**
   (`beam_size=1`, `condition_on_previous_text=False`, `cpu_threads=4`). **Modelo de reserva:
   `base`**, si la medición de latencia (R-12) muestra que `small` no cumple los 3 s.
 - **Razón**:
@@ -247,6 +247,37 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 - **Carga de modelos**: se cargan en segundo plano **al abrir la app**. Eso no es escuchar audio,
   así que no contradice RF-004. Si la persona activa la traducción antes de que terminen de cargar,
   la ventana muestra "Preparando la traducción…" y empieza a traducir en cuanto terminan.
+
+### Resultado de la medición (T009, 2026-11-09)
+
+Equipo de referencia: HP ZBook 15 G1, Intel Core i7-4800MQ (4 núcleos, AVX2), Windows 10 Pro,
+Python 3.14.10, faster-whisper 1.2.1, CTranslate2 4.8.5. Frases: `en_frase_01` a `en_frase_10`
+(LibriSpeech test-clean, 2.8 a 4.8 s). Total = voz a texto + traducción + 0.6 s de fin de frase.
+
+| Configuración | Percentil 90 del total | ¿Cumple ≤ 3.0 s? |
+|---|---|---|
+| `small`, `transcribe(language=None)` | 13.10 s | No |
+| `base`, `transcribe(language=None)` | 3.90 s | No |
+| `base`, idioma fijo en inglés | 2.41 s | Sí, pero ya no detecta otro idioma (caso límite de la spec) |
+| `base`, 8 hilos | 3.95 s | No (más hilos no ayuda) |
+| `small`, una sola pasada del codificador | 6.07 s | No |
+| **`base`, una sola pasada del codificador** | **2.22 s** | **Sí** |
+
+- **Causa**: con `language=None`, `transcribe()` pasa el audio dos veces por el codificador de
+  Whisper (una para detectar el idioma y otra para transcribir), y el codificador siempre procesa
+  30 s de audio aunque la frase dure 3 s. En este CPU, cada pasada de `base` cuesta casi 1 s.
+- **Decisión**: se usa **`base`** y `MotorLocal` llama a Whisper en **una sola pasada**:
+  `encode()` una vez, `detect_language()` y `generate()` sobre esa misma salida. Así se
+  conservan la detección de idioma y todos los descartes del contrato §2 (idioma ≠ `en` o
+  probabilidad < 0.6, `no_speech_prob` > 0.6, `avg_logprob` < -1.0). No cambia ningún
+  comportamiento de la spec.
+- **Comprobación de idioma con la misma técnica**: `en_frase_01` → `en` (1.00); `es_habla.wav`
+  → `es` (1.00), se descarta; `musica.wav` → `en` (0.30) con `no_speech_prob` 0.80, se descarta.
+- **Calidad (CA-001)**: con `base`, 8 de las 10 traducciones conservan el sentido; en
+  `en_frase_02` se pierde la primera mitad y `en_frase_08` sale confusa. Queda en el límite de
+  CA-001 (8 de 10) y se confirma a mano en el paso B4 del quickstart.
+- La memoria con `base` es menor que con `small`, así que la meta de ≤ 1.5 GB del plan tiene más
+  margen.
 
 ## R-13. Ajustes guardados en el equipo
 

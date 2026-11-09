@@ -16,7 +16,7 @@ El enfoque técnico es Python 3.14 con este flujo:
 
 1. Captura con **WASAPI loopback**, que no altera el audio ni usa el micrófono.
 2. Corte en frases con **Silero VAD**.
-3. Voz a texto con **faster-whisper** (`small` int8 en CPU).
+3. Voz a texto con **faster-whisper** (`base` int8 en CPU, una sola pasada del codificador; medición de T009 en R-12).
 4. Traducción con **OPUS-MT en-es sobre CTranslate2**.
 5. **Glosario es-MX** para ajustar el vocabulario a México.
 6. Franja y ventana en **PySide6**.
@@ -85,7 +85,7 @@ Equipo de referencia: HP ZBook 15 G1 (i7 Haswell, 4 núcleos, AVX2).
 - Sin escuchar nada antes de activar (RF-004).
 - Nada sigue corriendo al cerrar la ventana (RF-004a).
 - Sin arranque automático.
-- Memoria total ≤ 1.5 GB con `small`.
+- Memoria total ≤ 1.5 GB (con `base`, elegido en T009).
 - Uso de CPU acotado para no trabar la llamada: voz a texto y traducción corren una después de la
   otra en el mismo hilo del selector, cada una con 4 hilos como máximo (`cpu_threads=4`,
   `intra_threads=4`), así que el cálculo pesado nunca usa más de 4 hilos a la vez. El VAD usa 1

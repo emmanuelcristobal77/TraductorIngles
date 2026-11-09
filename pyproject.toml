@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traductor"
+version = "0.1.0"
+description = "TraductorIngles v0: subtítulos en español de México del audio en inglés del sistema"
+requires-python = ">=3.12"
+
+[project.scripts]
+traductor = "traductor.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"traductor.recursos" = ["*.tsv", "*.txt", "*.ico"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+qt_api = "pyside6"
+markers = [
+    "spec(*ids): identificadores RF/CA de spec.md que cubre el test",
+    "modelos: necesita los modelos descargados en modelos/",
+]
