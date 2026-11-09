@@ -41,6 +41,14 @@ Kepler sin soporte en CTranslate2), con Windows 10.
     la spec).
   - Cada dispositivo tiene su propio formato (48 kHz, estéreo, int16 o float32). Por eso se
     remuestrea a 16 kHz mono, que es lo que esperan VAD y Whisper.
+  - **Volumen en cero o silenciado** (caso límite "Sin sonido de salida"): el loopback suele
+    captar la mezcla **antes** del volumen maestro, así que seguiría recibiendo voz aunque la
+    persona no oiga nada. Por eso la captura **lee** (nunca cambia) el volumen maestro y el
+    silencio de la salida predeterminada con `pycaw` (`IAudioEndpointVolume.GetMute` y
+    `GetMasterVolumeLevelScalar`) cada 0.5 s, y también cuando cambia el dispositivo. Si está
+    silenciada o en 0, el audio se entrega como silencio. Si no se puede leer el volumen, se supone
+    que suena (no se pierden subtítulos por un fallo de lectura). Solo se usan métodos de lectura,
+    así que se cumple RF-010.
 - **Alternativas consideradas**:
   - `soundcard`: también hace loopback, pero falla más con cambios de dispositivo y tiene menos
     mantenimiento.
@@ -97,9 +105,14 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 ## R-06. Español de México (Principio II, RF-007)
 
 - **Decisión**: después de traducir, se aplica un **glosario es-MX**: un archivo de datos
-  `glosario_es_mx.tsv` con reemplazos por palabra completa que respetan mayúsculas. Ejemplos:
-  ordenador→computadora, móvil→celular, coche→carro, conducir→manejar, zumo→jugo, gafas→lentes,
-  vale→está bien, vosotros→ustedes.
+  `glosario_es_mx.tsv` con reemplazos por palabra o frase completa que respetan mayúsculas.
+  Pares iniciales: ordenador→computadora, coche→carro, coches→carros, zumo→jugo, gafas→lentes,
+  vosotros→ustedes, teléfono móvil→celular, el móvil→el celular.
+- **Regla del glosario**: solo entran términos que en el español que produce el traductor tienen
+  **un solo sentido**. Una palabra con varios sentidos se agrega solo como frase completa que
+  quite la ambigüedad. Por eso quedan fuera, como palabras sueltas, *vale* ("vale la pena",
+  "vale 10 pesos"), *móvil* ("dispositivo móvil" ya es correcto en México) y *conducir* ("conducir
+  una reunión"). Si hay varias entradas que coinciden, se aplica primero la más larga.
 - **Razón**: ningún modelo sin internet traduce específicamente a es-MX, y OPUS-MT mezcla corpus de
   España y de América. El glosario es determinista, se prueba por completo y se amplía sin tocar
   código. Se aplica en los dos modos de procesamiento, porque el servicio en línea también entrega
@@ -283,7 +296,7 @@ Kepler sin soporte en CTranslate2), con Windows 10.
 | P-01 | **Estado de la spec**: dice "Borrador". La constitución exige aprobación antes de planear o implementar. | **Resuelto** (2026-11-08): el propietario aprobó la spec; el estado es "Aprobada" en `spec.md` y en `specs/MAPA.md`. |
 | P-02 | Mover la franja con teclado. | **Resuelto** (aclaración del 2026-11-08): botón "Mover subtítulos" + flechas; también con mouse (RF-009, RF-014). |
 | P-03 | Cómo se configura la cuenta del modo en línea. | **Resuelto**: cuadro en la app y guardado cifrado (RF-015a, RF-015c, R-14). |
-| P-04 | **"Abrir desde la barra de tareas"** con la app cerrada: Windows 10 no deja que un instalador ancle programas. | **Documentado como limitación** (R-11): acceso directo en el escritorio y en el menú Inicio; botón e ícono en la barra mientras está abierta; anclar es manual. No requiere cambiar la spec. |
+| P-04 | **"Abrir desde la barra de tareas"** con la app cerrada: Windows 10 no deja que un instalador ancle programas. | **Documentado como limitación** (R-11): acceso directo en el escritorio y en el menú Inicio; botón e ícono en la barra mientras está abierta; anclar es manual. **Resuelto**: RF-001 y el escenario 4.1 se enmendaron el 2026-11-09 para decir esto. |
 | P-05 | Qué pasa al cerrar la ventana principal. | **Resuelto**: cerrar sale de la app y minimizar no detiene nada (RF-004a, CA-015). |
 | P-06 | "La primera vez" del aviso del modo en línea. | **Resuelto**: una vez por instalación (RF-015a, R-13). |
 | P-07 | "Unos segundos" sin habla antes de borrar el subtítulo. | **Resuelto**: 4 s (RF-012). |

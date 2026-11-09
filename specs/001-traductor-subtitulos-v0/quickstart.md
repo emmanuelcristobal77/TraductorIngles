@@ -82,13 +82,14 @@ que hable en inglés.
 | B2 | Con la app abierta, sin activar nada, reproduce el video 1 minuto. | No aparece ningún subtítulo. | CA-007 |
 | B3 | Presiona **Activar traducción**. | El botón cambia a "Desactivar traducción" y el estado a "Traducción activa". | RF-002, RF-005 |
 | B4 | Reproduce las 10 frases del video. | Aparecen subtítulos en español, de 2 líneas como máximo; entiendes al menos 8 de 10 frases. | CA-001 |
-| B5 | Cuenta mentalmente desde que termina cada frase. | El subtítulo sale en 3 segundos o menos. | CA-002 |
+| B5 | Cuenta mentalmente desde que termina cada una de 10 frases. | En al menos 9 de las 10, el subtítulo sale en 3 segundos o menos. | CA-002 |
 | B6 | Pon el video en pantalla completa. | Los subtítulos siguen encima. | CA-006 |
 | B7 | Pausa el video 10 s y luego reanúdalo. | En la pausa el subtítulo desaparece y no salen nuevos; al reanudar vuelven. | Historia 2 |
 | B8 | Arrastra la franja con el mouse a la parte de arriba. Luego presiona **Mover subtítulos**, muévela con las flechas a la izquierda y presiona Enter. | Las dos veces la franja se queda donde la dejaste; durante el modo de mover se ve resaltada con la instrucción. | RF-009 |
 | B9 | Repite B4 con el podcast y con la llamada. | Funciona igual con las tres fuentes. | CA-005 |
 | B10 | En la llamada, habla tú por el micrófono. | Lo que dices no aparece en los subtítulos. | CA-009 |
 | B11 | Durante la llamada, cambia de bocinas a audífonos. | Los subtítulos siguen sin reactivar nada. | Caso límite |
+| B11a | Con el video sonando y la traducción activa, silencia el sonido de Windows (ícono de la bocina o tecla de silencio). Después quita el silencio. | Mientras está en silencio no salen subtítulos nuevos ni aparece ningún mensaje de error; al quitarlo, vuelven a salir. | Caso límite |
 | B12 | Con la ventana de la llamada al frente, presiona **Ctrl+Alt+T** dos veces. | La primera vez se desactiva y la segunda se activa; el cambio se ve en menos de 1 s y no cambias de ventana. | CA-014 |
 | B13 | Presiona **Desactivar traducción**. | Los subtítulos desaparecen en menos de 1 s; el audio no se corta ni cambia de volumen. | CA-004, CA-008 |
 | B13a | Activa otra vez la traducción y, con el video sonando, minimiza la ventana de TraductorIngles. Después ábrela desde la barra de tareas y ciérrala con la X. | Al minimizar, los subtítulos siguen saliendo; al cerrar, desaparecen la franja y el ícono en menos de 1 s. | CA-015 |
@@ -98,6 +99,7 @@ que hable en inglés.
 | B16 | Enciende **Modo en línea** (primera vez en esta instalación). | Aparece un aviso de que el audio saldrá del equipo. Al aceptarlo, la app pide la clave y la región. | CA-012 |
 | B16a | Escribe una clave **inventada** y presiona **Guardar y activar**. | Aparece "No se pudo activar el modo en línea: revisa la clave y la región…" y el indicador sigue en "Sin internet". | CA-012, RF-015c |
 | B16b | Enciende otra vez **Modo en línea** y escribe la clave y la región correctas. | Ya no sale el aviso, solo el cuadro de la cuenta. Al guardar, el indicador dice "En línea: el audio sale del equipo". | CA-012 |
+| B16c | Con el modo en línea encendido y la traducción activa, repite B4 y B5. | Los subtítulos se entienden igual o mejor que sin internet y salen igual de rápido o más (9 de 10 en 3 s o menos). | Supuestos (CA-001, CA-002) |
 | B17 | Con el modo en línea y el video sonando, apaga el wifi. | Aparece "Se perdió la conexión a internet. Seguimos traduciendo sin internet." y los subtítulos siguen saliendo. | CA-013 |
 | B18 | Prende el wifi y apaga **Modo en línea**. | El indicador vuelve a "Sin internet". | CA-012 |
 | B19 | Cierra la app, ábrela otra vez y enciende **Modo en línea**. | Al abrir dice "Sin internet". Al encenderlo, ya no sale ni el aviso ni el cuadro de la cuenta: pasa directo a "En línea". | CA-012 |

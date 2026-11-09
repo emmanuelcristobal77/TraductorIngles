@@ -4,7 +4,8 @@
 
 **Creada**: 2026-11-08
 
-**Estado**: Aprobada (2026-11-08, por el propietario)
+**Estado**: Aprobada (2026-11-08, por el propietario); enmendada el 2026-11-09 tras
+`/speckit-analyze` (ver "Enmienda 2026-11-09")
 
 **Propietario**: ver [MAPA.md](../MAPA.md)
 
@@ -35,6 +36,19 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
 - P: ¿Cuántos segundos sigue el último subtítulo cuando ya nadie habla? → R: 4 segundos.
 - P: ¿Poder usar todo con teclado limita el uso del mouse? → R: No. Todo lo que se hace con
   teclado también se puede hacer con el mouse; los dos caminos conviven.
+
+### Enmienda 2026-11-09 (tras `/speckit-analyze`)
+
+- P: ¿Qué ve la persona si activa la traducción antes de que la app termine de prepararse? → R: Un
+  estado visible "Preparando la traducción…"; la traducción empieza sola en cuanto la app está
+  lista (RF-005, entidad "Estado de traducción").
+- P: ¿Con el teclado, la franja solo se mueve en pasos cortos? → R: No. Las flechas la mueven en
+  pasos cortos y Mayús + flechas en pasos largos (RF-009).
+- P: ¿La meta de 3 s aplica a todas las frases sin excepción? → R: No; al menos 9 de cada 10
+  frases (CA-002).
+- P: ¿La app se puede abrir desde la barra de tareas recién instalada? → R: No, porque Windows no
+  deja que un instalador la ancle. Se abre desde el escritorio o el menú Inicio; mientras está
+  abierta se ve en la barra de tareas, y anclarla es opcional y manual (RF-001).
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -118,7 +132,8 @@ traducción y la desactiva.
 **Escenarios de aceptación**:
 
 1. **Dado** que la app está instalada, **cuando** la persona usuaria busca cómo abrirla,
-   **entonces** la encuentra en el escritorio y en la barra de tareas.
+   **entonces** la encuentra en el escritorio y en el menú Inicio; con la app abierta, también la
+   ve en la barra de tareas.
 2. **Dado** que la app está abierta y la traducción desactivada, **cuando** la persona usuaria hace
    una sola acción de activar, **entonces** la traducción queda activa y la app lo indica de forma
    visible.
@@ -161,8 +176,11 @@ traducción y la desactiva.
 
 ### Requisitos funcionales
 
-- **RF-001** (RF1 del usuario): La app DEBE poder abrirse desde un acceso en el escritorio y desde
-  la barra de tareas de Windows.
+- **RF-001** (RF1 del usuario): La app DEBE poder abrirse desde un acceso directo en el escritorio y
+  desde el menú Inicio de Windows. Mientras está abierta, DEBE verse en la barra de tareas (su botón
+  y su ícono en el área de notificación). Anclarla a la barra de tareas para abrirla desde ahí es
+  opcional y lo hace la persona con las opciones normales de Windows, porque Windows no permite que
+  un instalador la ancle.
 - **RF-002**: La persona usuaria DEBE poder activar la traducción con una sola acción desde la app.
 - **RF-003** (RF2 del usuario): La persona usuaria DEBE poder desactivar la traducción en cualquier
   momento con una sola acción.
@@ -171,7 +189,10 @@ traducción y la desactiva.
 - **RF-004a**: Cerrar la ventana principal (con la X o con Alt+F4) DEBE cerrar la app por
   completo: se detiene la traducción y desaparecen la franja de subtítulos y el ícono de la barra
   de tareas. Minimizar la ventana NO DEBE detener la traducción.
-- **RF-005**: La app DEBE indicar de forma visible si la traducción está activa o desactivada.
+- **RF-005**: La app DEBE indicar de forma visible si la traducción está desactivada, preparándose
+  o activa. Si la persona activa la traducción mientras la app todavía se prepara para traducir, la
+  app DEBE indicarlo ("Preparando la traducción…") y empezar a traducir en cuanto esté lista, sin
+  que la persona tenga que hacer nada más.
 - **RF-006**: Con la traducción activa, la app DEBE captar el audio en inglés que se reproduce por
   las bocinas o audífonos de la computadora, sin importar qué aplicación o plataforma lo produce.
 - **RF-007**: La app DEBE traducir ese audio al español de México.
@@ -182,7 +203,8 @@ traducción y la desactiva.
   pantalla para que no tape lo que necesita ver, de dos formas:
   - arrastrándola con el mouse;
   - con el teclado: el botón "Mover subtítulos" de la ventana principal activa el modo de mover;
-    las flechas desplazan la franja y Enter o Esc terminan el modo.
+    las flechas desplazan la franja en pasos cortos, Mayús + flechas en pasos largos, y Enter o
+    Esc terminan el modo.
 - **RF-010**: La app NO DEBE alterar el audio original: no lo silencia, no lo pausa ni cambia su
   volumen.
 - **RF-011**: La app NO DEBE traducir lo que entra por el micrófono.
@@ -238,7 +260,9 @@ traducción y la desactiva.
 
 ### Entidades clave
 
-- **Estado de traducción**: activa o desactivada; empieza siempre desactivada.
+- **Estado de traducción**: desactivada, preparando o activa; empieza siempre desactivada.
+  "Preparando" solo ocurre si la persona activa la traducción antes de que la app termine de
+  prepararse; en cuanto termina, pasa sola a activa.
 - **Modo de procesamiento**: sin internet (por defecto) o en línea (opcional, elegido por la
   persona); al abrir la app siempre empieza en sin internet.
 - **Cuenta del modo en línea**: la clave y la región del servicio de traducción en internet. Se
@@ -255,8 +279,8 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
 - **CA-001** (CA1 del usuario): Al reproducir un video de prueba en inglés con habla clara, con la
   traducción activa, aparecen subtítulos en español; en una muestra de 10 frases, la persona que
   prueba entiende correctamente el sentido de al menos 8.
-- **CA-002**: El subtítulo de cada frase aparece a más tardar 3 segundos después de que se terminó
-  de decir.
+- **CA-002**: En una muestra de 10 frases, el subtítulo de al menos 9 aparece a más tardar 3
+  segundos después de que se terminó de decir la frase.
 - **CA-003** (CA2 del usuario): Una persona que nunca ha usado la app, sin instrucciones, abre la
   app y activa la traducción en menos de 10 segundos; 9 de cada 10 personas lo logran al primer
   intento.
@@ -298,7 +322,8 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
 - Un solo usuario por computadora; no hay cuentas ni inicio de sesión.
 - La computadora (portátil o de escritorio) usa Windows 10 o posterior, como fija la constitución.
 - "Accesible desde el escritorio y/o barra de tareas" se cubre con un acceso directo en el
-  escritorio y un ícono en la barra de tareas.
+  escritorio y en el menú Inicio, y con el botón y el ícono en la barra de tareas mientras la app
+  está abierta (RF-001).
 - "Solo se inicia si el usuario la activa" significa que la traducción siempre empieza desactivada y
   que la app no arranca sola con Windows.
 - Se traduce únicamente lo que sale por bocinas o audífonos; el micrófono queda fuera.

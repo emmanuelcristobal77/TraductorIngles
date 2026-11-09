@@ -41,6 +41,7 @@ Detalle de cada decisión: [research.md](research.md).
 |---|---|
 | Captura WASAPI loopback | `PyAudioWPatch>=0.2.12` |
 | Remuestreo a 16 kHz | `soxr>=0.5` |
+| Leer (sin cambiar) el volumen y el silencio de la salida | `pycaw>=20240210` (R-02) |
 | Audio | `numpy>=2.0` |
 | Voz a texto + Silero VAD (ONNX) | `faster-whisper>=1.1` |
 | Traducción sin internet | `ctranslate2>=4.5`, `sentencepiece>=0.2` |
@@ -68,7 +69,8 @@ Equipo de referencia: HP ZBook 15 G1 (i7 Haswell, 4 núcleos, AVX2).
 
 **Metas de rendimiento**:
 
-- Subtítulo en ≤ 3 s desde el fin de cada frase (CA-002); presupuesto de 2.6 s (R-12).
+- Subtítulo en ≤ 3 s desde el fin de la frase en al menos 9 de cada 10 frases (percentil 90,
+  CA-002); presupuesto de 2.6 s (R-12).
 - Desactivar o cerrar la app → franja oculta en < 1 s (CA-004, CA-014, CA-015).
 - La app abre y queda lista para activar en < 10 s (CA-003).
 - Comprobar la cuenta del modo en línea: ≤ 5 s (R-14).
@@ -82,7 +84,10 @@ Equipo de referencia: HP ZBook 15 G1 (i7 Haswell, 4 núcleos, AVX2).
 - Nada sigue corriendo al cerrar la ventana (RF-004a).
 - Sin arranque automático.
 - Memoria total ≤ 1.5 GB con `small`.
-- Uso de CPU limitado a 4 hilos para no trabar la llamada.
+- Uso de CPU acotado para no trabar la llamada: voz a texto y traducción corren una después de la
+  otra en el mismo hilo del selector, cada una con 4 hilos como máximo (`cpu_threads=4`,
+  `intra_threads=4`), así que el cálculo pesado nunca usa más de 4 hilos a la vez. El VAD usa 1
+  hilo.
 
 **Escala/alcance**: 1 persona usuaria por equipo; 2 ventanas (principal y franja), 1 ícono de
 notificación, 2 cuadros (aviso y cuenta) y 9 mensajes
@@ -142,6 +147,8 @@ src/traductor/
 ├── textos.py                 # todos los textos visibles (UI-xx, D-xx, M-xx) en es-MX
 ├── ajustes.py                # ajustes.json
 ├── cuenta.py                 # CuentaEnLinea: cifrado DPAPI, validación con el servicio
+├── bitacora.py               # errores sin contenido en %LOCALAPPDATA% (R-13)
+├── canal.py                  # flujo captura → segmentador → selector → glosario → Subtitulo, con colas e hilos
 ├── audio/
 │   ├── captura.py            # WASAPI loopback, remuestreo, cambio de dispositivo
 │   └── segmentador.py        # Silero VAD → Frase

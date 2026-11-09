@@ -45,11 +45,12 @@ dos formas.
 | Siempre encima | Sí, incluido un video en pantalla completa sin bordes | RF-008, CA-006 |
 | Toma el foco | **Nunca**, salvo durante el modo de mover (no interrumpe la llamada ni el video) | Historia 1, escenario 3 |
 | Texto | Blanco sobre fondo negro al 75 % de opacidad, letra de 28 px, máximo 2 líneas | RF-008 |
+| Texto largo | Se divide en bloques de hasta 2 líneas que se muestran uno tras otro. Cada bloque, salvo el último, dura 1 s por cada 15 caracteres, con un mínimo de 1.5 s y un máximo de 4 s. El último bloque se queda hasta que se cumple la regla de "Desaparece". Un subtítulo nuevo reemplaza de inmediato a los bloques que falten. | RF-008 |
 | Mover con mouse | Se arrastra con el botón izquierdo a cualquier parte de la pantalla, en cualquier momento | RF-009 |
 | Mover con teclado | Con el modo de mover (§2.1) | RF-009 |
 | Límites | Nunca sale por completo de la pantalla | RF-009 |
 | Recordar la posición | **No** (vuelve a la posición inicial al abrir la app) | Principio III |
-| Desaparece | Con 4 s sin habla, o en menos de 1 s al desactivar la traducción | RF-012, CA-004 |
+| Desaparece | Con 4 s sin habla: 4 s después de lo último que ocurra entre "se mostró el subtítulo" y "se detectó voz por última vez". Al desactivar la traducción, en menos de 1 s | RF-012, CA-004 |
 
 ### 2.1 Modo de mover
 
