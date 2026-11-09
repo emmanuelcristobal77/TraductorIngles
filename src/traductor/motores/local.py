@@ -21,9 +21,11 @@ LOGPROB_MIN = -1.0
 
 
 def carpeta_modelos() -> Path:
-    """Junto al ejecutable si la app está empaquetada; en la raíz del repositorio si no."""
+    """En la carpeta de la app empaquetada (``_internal`` de PyInstaller, junto al ejecutable);
+    en la raíz del repositorio durante el desarrollo."""
     if getattr(sys, "frozen", False):
-        return Path(sys.executable).resolve().parent / "modelos"
+        base = getattr(sys, "_MEIPASS", None) or Path(sys.executable).resolve().parent
+        return Path(base) / "modelos"
     return Path(__file__).resolve().parents[3] / "modelos"
 
 

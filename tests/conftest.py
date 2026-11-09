@@ -19,9 +19,10 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "modelos: necesita los modelos descargados en modelos/")
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def appdata_temporal(tmp_path, monkeypatch):
-    """Redirige APPDATA y LOCALAPPDATA a una carpeta temporal."""
+    """Redirige APPDATA y LOCALAPPDATA a una carpeta temporal en **todos** los tests, para que
+    ninguno escriba ajustes, cuentas ni bitácora en las carpetas reales de la persona."""
     roaming = tmp_path / "Roaming"
     local = tmp_path / "Local"
     roaming.mkdir()

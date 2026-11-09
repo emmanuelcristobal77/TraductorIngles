@@ -4,3 +4,65 @@
 [CA-003]
 justificacion = "La parte con 10 personas nuevas, sin instrucciones (quickstart parte B), no se puede automatizar; el test automático de T020 solo comprueba el foco inicial y que la app responde antes de cargar los modelos."
 paso_quickstart = "Prueba con personas nuevas"
+
+[CA-001]
+justificacion = "Entender el sentido de 8 de 10 frases lo juzga una persona (quickstart B4); el test automático solo comprueba que hay traducción."
+paso_quickstart = "B4"
+
+# Los siguientes tienen test automático con simulaciones o WAV; la entrada documenta la
+# confirmación a mano con fuentes reales (T075).
+[CA-002]
+justificacion = "El test mide la latencia con WAV; la persona la confirma con un video real contando los segundos."
+paso_quickstart = "B5"
+
+[CA-004]
+justificacion = "El test usa un canal falso; la persona confirma que los subtítulos desaparecen en menos de 1 s con la app real."
+paso_quickstart = "B13"
+
+[CA-005]
+justificacion = "Los tests usan WAV; la persona confirma con una llamada, un video en el navegador y un audio en un reproductor reales."
+paso_quickstart = "B9"
+
+[CA-006]
+justificacion = "El test usa una ventana de prueba; la persona confirma sobre un video real en pantalla completa y sobre la ventana de una llamada."
+paso_quickstart = "B6"
+
+[CA-007]
+justificacion = "El test usa un canal falso; la persona confirma 1 minuto de video sin subtítulos con la app instalada."
+paso_quickstart = "B2"
+
+[CA-008]
+justificacion = "El test simula pyaudiowpatch y pycaw; la persona confirma de oído que el audio no se corta ni cambia de volumen."
+paso_quickstart = "B13"
+
+[CA-009]
+justificacion = "El test simula los dispositivos; la persona confirma en una llamada real que su voz no aparece."
+paso_quickstart = "B10"
+
+[CA-010]
+justificacion = "Los tests simulan las teclas; la persona confirma todo el recorrido solo con teclado, incluido Win+B al ícono."
+paso_quickstart = "B14"
+
+[CA-011]
+justificacion = "El test bloquea los sockets; la persona confirma con el wifi apagado y el cable desconectado."
+paso_quickstart = "B15"
+
+[CA-012]
+justificacion = "Los tests simulan el servicio; la persona confirma con una cuenta real de Azure."
+paso_quickstart = "B16 a B19"
+
+[CA-013]
+justificacion = "Los tests simulan la desconexión; la persona confirma apagando el wifi con el modo en línea encendido."
+paso_quickstart = "B17"
+
+[CA-014]
+justificacion = "El test simula WM_HOTKEY; la persona confirma Ctrl+Alt+T sobre un video en pantalla completa y una llamada."
+paso_quickstart = "B12"
+
+[CA-015]
+justificacion = "Los tests usan piezas falsas; la persona confirma minimizar y cerrar con la X en la app instalada."
+paso_quickstart = "B13a"
+
+[CA-016]
+justificacion = "Los tests simulan el mouse; la persona confirma todo el recorrido solo con el mouse."
+paso_quickstart = "B14a"
