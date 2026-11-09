@@ -345,13 +345,13 @@ código nuevo.
 **Prueba independiente**: reproducir un video en inglés en el navegador con la traducción activa,
 pausarlo, reanudarlo y ponerlo en pantalla completa (quickstart B6 y B7).
 
-- [ ] T052 [P] [US2] Escribir `tests/integration/test_fuente_video.py`, con las marcas `modelos` y `spec("RF-012", "CA-005")`. Alimenta el canal con `en_pausa.wav` y el reloj real, y comprueba lo siguiente:
+- [X] T052 [P] [US2] Escribir `tests/integration/test_fuente_video.py`, con las marcas `modelos` y `spec("RF-012", "CA-005")`. Alimenta el canal con `en_pausa.wav` y el reloj real, y comprueba lo siguiente:
   - en la pausa de 10 s el último subtítulo desaparece 4 s después de que aparece su último bloque (no hay voz que reinicie el temporizador) y no sale ninguno nuevo;
   - al volver el habla, aparecen subtítulos otra vez.
-- [ ] T053 [P] [US2] Escribir `tests/ui/test_pantalla_completa.py`, marcado `spec("CA-006", "RF-008")`. Comprueba lo siguiente:
+- [X] T053 [P] [US2] Escribir `tests/ui/test_pantalla_completa.py`, marcado `spec("CA-006", "RF-008")`. Comprueba lo siguiente:
   - con una ventana de prueba sin bordes, a pantalla completa y con el foco, mostrar la franja no le quita el foco a esa ventana;
   - el temporizador de 2 s llama a `SetWindowPos` (simulado) con `HWND_TOPMOST` y `SWP_NOACTIVATE`.
-- [ ] T054 [US2] Si T052 o T053 fallan, corregir en `src/traductor/ui/subtitulos.py` o `src/traductor/audio/segmentador.py` sin agregar comportamiento nuevo, y volver a correrlos
+- [X] T054 [US2] Si T052 o T053 fallan, corregir en `src/traductor/ui/subtitulos.py` o `src/traductor/audio/segmentador.py` sin agregar comportamiento nuevo, y volver a correrlos
 
 **Punto de control**: las Historias 4, 1 y 2 funcionan. Se valida a mano con los pasos B6 y B7.
 
@@ -364,8 +364,8 @@ pausarlo, reanudarlo y ponerlo en pantalla completa (quickstart B6 y B7).
 **Prueba independiente**: reproducir un podcast en inglés en un reproductor de escritorio con la
 traducción activa (quickstart B9).
 
-- [ ] T055 [P] [US3] Escribir `tests/integration/test_fuente_audio.py`, con las marcas `modelos` y `spec("CA-005", "RF-006")`. Alimenta el canal con `en_continuo.wav` (más de 7 s de habla) y comprueba que se producen al menos 2 subtítulos, gracias al corte a los 7 s, y que el percentil 90 del tiempo desde su `t_fin_habla` es de 3.0 s o menos (CA-002).
-- [ ] T056 [US3] Si T055 falla, corregir en `src/traductor/audio/segmentador.py` o `src/traductor/canal.py` sin agregar comportamiento nuevo, y volver a correrlo
+- [X] T055 [P] [US3] Escribir `tests/integration/test_fuente_audio.py`, con las marcas `modelos` y `spec("CA-005", "RF-006")`. Alimenta el canal con `en_continuo.wav` (más de 7 s de habla) y comprueba que se producen al menos 2 subtítulos, gracias al corte a los 7 s, y que el percentil 90 del tiempo desde su `t_fin_habla` es de 3.0 s o menos (CA-002).
+- [X] T056 [US3] Si T055 falla, corregir en `src/traductor/audio/segmentador.py` o `src/traductor/canal.py` sin agregar comportamiento nuevo, y volver a correrlo
 
 **Punto de control**: las cuatro historias funcionan sin internet. Se valida a mano con el paso B9.
 
@@ -381,12 +381,12 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
 
 ### Tests del modo en línea ⚠️ (escribir primero; deben fallar)
 
-- [ ] T057 [P] Escribir `tests/unit/test_ajustes.py`, marcado `spec("RF-015a")`, con la *fixture* `appdata_temporal`. Comprueba lo siguiente:
+- [X] T057 [P] Escribir `tests/unit/test_ajustes.py`, marcado `spec("RF-015a")`, con la *fixture* `appdata_temporal`. Comprueba lo siguiente:
   - sin archivo, `aviso_en_linea_aceptado` vale `false`;
   - guardar `true` y volver a cargar da `true`;
   - un `ajustes.json` dañado da los valores por defecto sin lanzar nada ni mostrar mensaje;
   - el archivo solo contiene la llave `aviso_en_linea_aceptado`.
-- [ ] T058 [P] Escribir `tests/unit/test_cuenta.py`, marcado `spec("RF-015a", "RF-015c")`, con `appdata_temporal` y `urllib.request.urlopen` simulado. Comprueba lo siguiente:
+- [X] T058 [P] Escribir `tests/unit/test_cuenta.py`, marcado `spec("RF-015a", "RF-015c")`, con `appdata_temporal` y `urllib.request.urlopen` simulado. Comprueba lo siguiente:
   - guardar y cargar con DPAPI real devuelve la misma clave y región;
   - `cuenta_en_linea.bin` no contiene la clave en texto plano;
   - la región se normaliza a minúsculas y sin espacios, y una clave o región vacía no se acepta;
@@ -394,17 +394,17 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
   - una respuesta 200 da `VALIDA`; 401, 403 o una región inexistente dan `INVALIDA`; `URLError` o tiempo agotado dan `SIN_RED`;
   - `borrar()` elimina el archivo;
   - la clave nunca aparece en `errores.log`.
-- [ ] T059 [P] Escribir `tests/unit/test_motor_en_linea.py`, marcado `spec("RF-015a", "RF-015b", "RF-015c", "RF-004")`, con `azure.cognitiveservices.speech` simulado. Comprueba lo siguiente:
+- [X] T059 [P] Escribir `tests/unit/test_motor_en_linea.py`, marcado `spec("RF-015a", "RF-015b", "RF-015c", "RF-004")`, con `azure.cognitiveservices.speech` simulado. Comprueba lo siguiente:
   - la configuración usa `speech_recognition_language="en-US"` y `add_target_language("es")`;
   - el audio entra por un `PushAudioInputStream` de 16 kHz, mono y 16 bits, y solo con frases de la sesión activa;
   - un `canceled` por error de red, una desconexión o 10 s sin respuesta lanzan `ErrorConexion`;
   - un `canceled` por autenticación lanza `ErrorAutenticacion`.
-- [ ] T060 [P] Escribir `tests/unit/test_selector_en_linea.py`, marcado `spec("RF-015b", "RF-015c", "CA-013")`. Comprueba lo siguiente:
+- [X] T060 [P] Escribir `tests/unit/test_selector_en_linea.py`, marcado `spec("RF-015b", "RF-015c", "CA-013")`. Comprueba lo siguiente:
   - con el modo `EN_LINEA`, un `ErrorConexion` cierra el motor en línea, traduce **la misma frase** con el motor local, emite `conexion_perdida` y no cambia el `EstadoTraduccion`;
   - un `ErrorAutenticacion` hace lo mismo pero emite `cuenta_rechazada`;
   - si `usar_en_linea()` recibe `ErrorPreparacion`, el modo sigue en `SIN_INTERNET`;
   - el motor local nunca se cierra mientras el modo en línea está activo.
-- [ ] T061 [P] Escribir `tests/ui/test_modo_en_linea.py`, marcado `spec("RF-015a", "RF-015c", "RF-014", "CA-010", "CA-012", "CA-016")`, con la validación de la cuenta simulada. Comprueba lo siguiente:
+- [X] T061 [P] Escribir `tests/ui/test_modo_en_linea.py`, marcado `spec("RF-015a", "RF-015c", "RF-014", "CA-010", "CA-012", "CA-016")`, con la validación de la cuenta simulada. Comprueba lo siguiente:
   - al abrir, UI-03 dice "Sin internet" y UI-04 está apagado con el nombre accesible "Modo en línea, apagado";
   - el orden de tabulación es UI-01 → UI-04 → UI-06;
   - D-01 sale al encender UI-04 con el foco en "No, seguir sin internet"; "No", Esc o cerrarlo dejan `SIN_INTERNET`, y el aviso sale otra vez la siguiente vez;
@@ -417,41 +417,41 @@ probar una clave inválida y luego una válida, apagar el wifi y reiniciar la ap
   - al volver a encender, ya no sale D-01, y con la cuenta guardada tampoco sale D-02;
   - al simular que se reinicia la app, empieza otra vez en "Sin internet";
   - se puede recorrer todo **solo con mouse** y **solo con teclado** (Tab y Espacio en UI-04, Tab y Enter en los cuadros).
-- [ ] T062 [P] Escribir `tests/ui/test_respaldo_en_linea.py`, marcado `spec("RF-015b", "RF-015c", "CA-013")`, con motores falsos. Comprueba lo siguiente:
+- [X] T062 [P] Escribir `tests/ui/test_respaldo_en_linea.py`, marcado `spec("RF-015b", "RF-015c", "CA-013")`, con motores falsos. Comprueba lo siguiente:
   - con el modo `EN_LINEA` y la traducción activa, `conexion_perdida` muestra M-07, cambia UI-03 y UI-04 a "Sin internet" y los subtítulos siguen saliendo sin reactivar nada;
   - `cuenta_rechazada` muestra M-08 y borra `cuenta_en_linea.bin`.
 
 ### Implementación del modo en línea
 
-- [ ] T063 [P] Crear `src/traductor/ajustes.py` con la clase `Ajustes`, que tiene un solo campo, `aviso_en_linea_aceptado: bool = False`, y los métodos `cargar()` y `guardar()`. Usa el archivo `%APPDATA%\TraductorIngles\ajustes.json`, con escritura atómica (archivo temporal y `os.replace`); "Si el archivo no existe o está dañado, se usan los valores por defecto sin mostrar ningún error".
-- [ ] T064 [P] Crear `src/traductor/cuenta.py` con lo siguiente:
+- [X] T063 [P] Crear `src/traductor/ajustes.py` con la clase `Ajustes`, que tiene un solo campo, `aviso_en_linea_aceptado: bool = False`, y los métodos `cargar()` y `guardar()`. Usa el archivo `%APPDATA%\TraductorIngles\ajustes.json`, con escritura atómica (archivo temporal y `os.replace`); "Si el archivo no existe o está dañado, se usan los valores por defecto sin mostrar ningún error".
+- [X] T064 [P] Crear `src/traductor/cuenta.py` con lo siguiente:
   - `@dataclass CuentaEnLinea(clave: str, region: str)`, donde la clave es "No vacía" y la región "No vacía, en minúsculas y sin espacios";
   - `guardar()`, `cargar() -> CuentaEnLinea | None` y `borrar()`, que usan `CryptProtectData` y `CryptUnprotectData` por `ctypes` (alcance del usuario actual) sobre el JSON `{"clave": …, "region": …}` en `%APPDATA%\TraductorIngles\cuenta_en_linea.bin`;
   - `validar(cuenta) -> ResultadoValidacion` (`VALIDA`, `INVALIDA` o `SIN_RED`), según R-14, con `urllib` y `timeout=5`;
   - la clave nunca se registra en la bitácora.
-- [ ] T065 [P] Crear `src/traductor/recursos/regiones_azure.txt` con las regiones de Azure AI Speech que admiten Speech Translation, una por línea, en minúsculas (por ejemplo `southcentralus`, `eastus`, `westus2`, `westeurope`).
-- [ ] T066 [P] Crear `src/traductor/motores/en_linea.py` con la clase `MotorEnLinea(MotorTraduccion)`, cuyo `nombre` es `"EN_LINEA"`. Se construye con una `CuentaEnLinea`:
+- [X] T065 [P] Crear `src/traductor/recursos/regiones_azure.txt` con las regiones de Azure AI Speech que admiten Speech Translation, una por línea, en minúsculas (por ejemplo `southcentralus`, `eastus`, `westus2`, `westeurope`).
+- [X] T066 [P] Crear `src/traductor/motores/en_linea.py` con la clase `MotorEnLinea(MotorTraduccion)`, cuyo `nombre` es `"EN_LINEA"`. Se construye con una `CuentaEnLinea`:
   - `preparar()` crea `SpeechTranslationConfig(subscription=clave, region=region)` y un `TranslationRecognizer` con `PushAudioInputStream` de 16 kHz, mono y 16 bits;
   - `traducir(frase)` convierte la frase a PCM int16, la empuja al *stream* y espera el resultado `es` con 10 s como máximo;
   - convierte los errores en `ErrorConexion` o `ErrorAutenticacion` según la tabla del contrato §3;
   - `cerrar()` es idempotente.
-- [ ] T067 Completar en `src/traductor/motores/selector.py` los métodos `usar_en_linea()` y `usar_local()` y los puntos 1 y 2 del contrato §4 (depende de T066): respaldo con la misma frase y los eventos `conexion_perdida` y `cuenta_rechazada`.
-- [ ] T068 [P] Crear `src/traductor/ui/dialogos.py` con lo siguiente:
+- [X] T067 Completar en `src/traductor/motores/selector.py` los métodos `usar_en_linea()` y `usar_local()` y los puntos 1 y 2 del contrato §4 (depende de T066): respaldo con la misma frase y los eventos `conexion_perdida` y `cuenta_rechazada`.
+- [X] T068 [P] Crear `src/traductor/ui/dialogos.py` con lo siguiente:
   - `AvisoEnLinea(QMessageBox)` (D-01), con el texto M-01, los botones "Sí, usar en línea" y "No, seguir sin internet", y el foco inicial en "No";
   - `CuadroCuenta(QDialog)` (D-02), con la explicación, el campo "Clave" (`Password`, nombre accesible "Clave del servicio"), el `QComboBox` editable "Región" (nombre accesible "Región del servicio"), cargado desde `regiones_azure.txt`, y los botones "Guardar y activar" y "Cancelar". Esc cancela;
   - la validación de D-02 corre en un `QThreadPool` para no congelar la ventana, y el botón muestra "Comprobando…" mientras tanto.
-- [ ] T069 Agregar UI-03 y UI-04 en `src/traductor/ui/ventana.py`:
+- [X] T069 Agregar UI-03 y UI-04 en `src/traductor/ui/ventana.py`:
   - UI-03 es un `QLabel` con los textos de `textos.py` y un color de aviso distinto con el modo `EN_LINEA`;
   - UI-04 es un `QCheckBox` "Modo en línea", apagado al abrir, cuyo nombre accesible cambia entre "Modo en línea, apagado" y "Modo en línea, encendido";
   - el orden de tabulación final es UI-01 → UI-04 → UI-06;
   - volver a correr `tests/ui/test_mover_franja.py` (T038) y `tests/ui/test_ventana.py` (T020) para confirmar que siguen en verde con UI-04.
-- [ ] T070 Conectar en `src/traductor/app.py` el flujo de [data-model.md §2](data-model.md) (depende de T063 a T069):
+- [X] T070 Conectar en `src/traductor/app.py` el flujo de [data-model.md §2](data-model.md) (depende de T063 a T069):
   - al encender UI-04: D-01 si hace falta, luego D-02 si no hay cuenta, y luego `selector.usar_en_linea()` y `modo.encender_en_linea()`;
   - al apagar UI-04: `selector.usar_local()` y `modo.volver_sin_internet()`;
   - `conexion_perdida` muestra M-07 y pone el modo en `SIN_INTERNET`;
   - `cuenta_rechazada` muestra M-08, llama a `cuenta.borrar()` y pone el modo en `SIN_INTERNET`;
   - UI-04 vuelve a apagado (con su nombre accesible "Modo en línea, apagado") en cualquier salida que deje el modo en `SIN_INTERNET`: cancelar D-01 o D-02, M-08, M-09, `conexion_perdida` o `cuenta_rechazada`.
-- [ ] T071 Correr `pytest -m "not modelos"` y corregir hasta que todos los tests de T057 a T062 pasen
+- [X] T071 Correr `pytest -m "not modelos"` y corregir hasta que todos los tests de T057 a T062 pasen
 
 **Punto de control**: el modo en línea funciona con servicios simulados. Se valida a mano con los pasos B14a y B16 a B19, con una cuenta real de Azure.
 

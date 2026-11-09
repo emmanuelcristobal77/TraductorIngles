@@ -6,10 +6,10 @@ from pathlib import Path
 
 from PySide6.QtCore import Qt, QTimer, Signal
 from PySide6.QtGui import QIcon, QKeyEvent
-from PySide6.QtWidgets import QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QCheckBox, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from traductor import textos
-from traductor.estado import EstadoTraduccion, ValorEstado
+from traductor.estado import EstadoTraduccion, ValorEstado, ValorModo
 
 RECURSOS = Path(__file__).resolve().parent.parent / "recursos"
 DURACION_MENSAJE_MS = 10_000
@@ -71,6 +71,7 @@ class VentanaPrincipal(QWidget):
     alternar_solicitado = Signal()
     cerrar_solicitado = Signal()
     mover_solicitado = Signal()
+    modo_solicitado = Signal(bool)  # UI-04 tocada por la persona (mouse o Espacio)
 
     def __init__(self) -> None:
         super().__init__()
@@ -96,6 +97,14 @@ class VentanaPrincipal(QWidget):
         self.temporizador_mensaje.timeout.connect(self._fin_mensaje_temporal)
         self._m05_fijo = False
 
+        self.etiqueta_modo = QLabel()  # UI-03
+        self.casilla_modo = QCheckBox(textos.UI04_TEXTO)  # UI-04, apagada al abrir
+        self.casilla_modo.setStyleSheet(
+            f"QCheckBox {{ font-size: 16px; color: #1a1a1a; }} "
+            f"QCheckBox:focus {{ border: 3px solid {COLOR_FOCO}; padding: 2px; }}")
+        self.casilla_modo.clicked.connect(self.modo_solicitado)
+        self.mostrar_modo(ValorModo.SIN_INTERNET)
+
         self.boton_mover = BotonConEnter(textos.UI06_TEXTO)  # UI-06 (RF-009)
         self.boton_mover.setAccessibleName(textos.UI06_NOMBRE)
         self.boton_mover.setStyleSheet(estilo_boton("secundario"))
@@ -104,10 +113,13 @@ class VentanaPrincipal(QWidget):
         self.disposicion = QVBoxLayout(self)
         self.disposicion.addWidget(self.boton_traduccion)
         self.disposicion.addWidget(self.etiqueta_estado)
+        self.disposicion.addWidget(self.etiqueta_modo)
+        self.disposicion.addWidget(self.casilla_modo)
         self.disposicion.addWidget(self.etiqueta_mensaje)
         self.disposicion.addWidget(self.boton_mover)
         self.setMinimumWidth(420)
-        QWidget.setTabOrder(self.boton_traduccion, self.boton_mover)
+        QWidget.setTabOrder(self.boton_traduccion, self.casilla_modo)  # UI-01 → UI-04 → UI-06
+        QWidget.setTabOrder(self.casilla_modo, self.boton_mover)
 
         self._pintar(ValorEstado.DESACTIVADA)
         self.boton_traduccion.setFocus()  # foco inicial en UI-01 (CA-003)
@@ -134,6 +146,19 @@ class VentanaPrincipal(QWidget):
         self.etiqueta_estado.setText(texto_estado)
         self.etiqueta_estado.setAccessibleName(texto_estado)
         self.etiqueta_estado.setStyleSheet(estilo(clave, "font-weight: bold;"))
+
+    # --- modo de procesamiento (UI-03 y UI-04) -----------------------------------------------
+    def mostrar_modo(self, valor: ValorModo) -> None:
+        en_linea = valor is ValorModo.EN_LINEA
+        texto = textos.UI03_EN_LINEA if en_linea else textos.UI03_SIN_INTERNET
+        self.etiqueta_modo.setText(texto)
+        self.etiqueta_modo.setAccessibleName(texto)
+        self.etiqueta_modo.setStyleSheet(estilo(
+            "modo_en_linea" if en_linea else "modo_sin_internet",
+            "font-weight: bold; padding: 2px 6px; border-radius: 4px;"))
+        self.casilla_modo.setChecked(en_linea)
+        self.casilla_modo.setAccessibleName(
+            textos.UI04_NOMBRE_ENCENDIDO if en_linea else textos.UI04_NOMBRE_APAGADO)
 
     # --- mensajes (contrato §6) -----------------------------------------------------------
     def mostrar_mensaje(self, id_mensaje: str) -> None:

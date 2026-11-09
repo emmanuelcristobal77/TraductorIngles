@@ -45,16 +45,17 @@ def armar_app(qtbot, canal_falso, user32_falso, appdata_temporal):
     creadas = []
     liberar = threading.Event()
 
-    def armar(preparar=None, ocupado=False, arrancar=True, salir=None, bloquear_carga=False):
+    def armar(preparar=None, ocupado=False, arrancar=True, salir=None, bloquear_carga=False,
+              canal=None, selector=None):
         from traductor.app import Aplicacion
 
         if bloquear_carga:
             def preparar():  # noqa: F811 - simula una carga de modelos que tarda
                 liberar.wait(30)
 
-        aplicacion = Aplicacion(canal=canal_falso, preparar=preparar or (lambda: None),
+        aplicacion = Aplicacion(canal=canal or canal_falso, preparar=preparar or (lambda: None),
                                 user32=user32_falso(ocupado=ocupado),
-                                salir=salir or (lambda: None))
+                                salir=salir or (lambda: None), selector=selector)
         qtbot.addWidget(aplicacion.ventana)
         qtbot.addWidget(aplicacion.franja)
         creadas.append(aplicacion)
@@ -66,3 +67,5 @@ def armar_app(qtbot, canal_falso, user32_falso, appdata_temporal):
     liberar.set()
     for aplicacion in creadas:
         aplicacion.bandeja.hide()
+        if hasattr(aplicacion.canal, "detener"):
+            aplicacion.canal.detener()
