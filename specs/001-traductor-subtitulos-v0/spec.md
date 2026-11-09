@@ -22,6 +22,19 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
   propósito (modo en línea opcional).
 - P: ¿Debe haber un atajo de teclado que active o desactive la traducción desde cualquier ventana?
   → R: Sí, un atajo fijo (Ctrl+Alt+T), sin opción de cambiarlo en la v0.
+- P: ¿Cómo mueve la franja de subtítulos una persona que solo usa teclado? → R: Con un botón
+  "Mover subtítulos" en la ventana principal; al presionarlo, las flechas mueven la franja y Enter o
+  Esc terminan.
+- P: ¿Qué pasa al cerrar la ventana principal (X o Alt+F4)? → R: Se cierra la app: se detiene la
+  traducción y desaparecen la franja y el ícono. Minimizar la ventana no detiene nada.
+- P: ¿Cómo se configura la cuenta del servicio en internet del modo en línea? → R: La primera vez
+  que se enciende el modo en línea, después del aviso, la app pide la clave y la región en un cuadro
+  sencillo y las guarda cifradas en el equipo.
+- P: ¿Cada cuánto sale el aviso de que el audio saldrá del equipo? → R: Una sola vez por
+  instalación; después basta encender el interruptor.
+- P: ¿Cuántos segundos sigue el último subtítulo cuando ya nadie habla? → R: 4 segundos.
+- P: ¿Poder usar todo con teclado limita el uso del mouse? → R: No. Todo lo que se hace con
+  teclado también se puede hacer con el mouse; los dos caminos conviven.
 
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
@@ -123,7 +136,7 @@ traducción y la desactiva.
 
 ### Casos límite
 
-- **Silencio**: si no suena nada, no aparecen subtítulos y el último subtítulo desaparece tras unos
+- **Silencio**: si no suena nada, no aparecen subtítulos y el último subtítulo desaparece tras 4
   segundos sin habla.
 - **Audio en otro idioma**: si lo que suena no está en inglés (por ejemplo, ya está en español), la
   app no muestra traducciones inventadas.
@@ -155,6 +168,9 @@ traducción y la desactiva.
   momento con una sola acción.
 - **RF-004** (RF3 del usuario): La app NO DEBE escuchar ni traducir audio mientras la traducción no
   haya sido activada por la persona usuaria. La app no se abre sola al encender la portátil.
+- **RF-004a**: Cerrar la ventana principal (con la X o con Alt+F4) DEBE cerrar la app por
+  completo: se detiene la traducción y desaparecen la franja de subtítulos y el ícono de la barra
+  de tareas. Minimizar la ventana NO DEBE detener la traducción.
 - **RF-005**: La app DEBE indicar de forma visible si la traducción está activa o desactivada.
 - **RF-006**: Con la traducción activa, la app DEBE captar el audio en inglés que se reproduce por
   las bocinas o audífonos de la computadora, sin importar qué aplicación o plataforma lo produce.
@@ -163,26 +179,39 @@ traducción y la desactiva.
   ventanas (incluido un video en pantalla completa), en letra grande, alto contraste y no más de dos
   líneas a la vez, renovándose conforme avanza lo que se dice.
 - **RF-009**: La persona usuaria DEBE poder mover la franja de subtítulos a otra parte de la
-  pantalla para que no tape lo que necesita ver.
+  pantalla para que no tape lo que necesita ver, de dos formas:
+  - arrastrándola con el mouse;
+  - con el teclado: el botón "Mover subtítulos" de la ventana principal activa el modo de mover;
+    las flechas desplazan la franja y Enter o Esc terminan el modo.
 - **RF-010**: La app NO DEBE alterar el audio original: no lo silencia, no lo pausa ni cambia su
   volumen.
 - **RF-011**: La app NO DEBE traducir lo que entra por el micrófono.
 - **RF-012**: Cuando no hay voz en inglés, la app NO DEBE mostrar subtítulos inventados, y el último
-  subtítulo DEBE desaparecer tras unos segundos sin habla.
+  subtítulo DEBE desaparecer tras 4 segundos sin habla.
 - **RF-013**: Si ocurre un error, la app DEBE mostrar un mensaje breve en español de México, sin
   códigos técnicos, que diga qué puede hacer la persona.
-- **RF-014**: Todos los controles de la app (abrir, activar, desactivar) DEBEN poder usarse con
-  teclado y tener nombres claros en español.
+- **RF-014**: Todos los controles de la app (abrir, activar, desactivar, mover subtítulos, modo en
+  línea) DEBEN poder usarse **tanto con el mouse como con el teclado**, y tener nombres claros en
+  español. El soporte de teclado no reemplaza ni limita el uso del mouse.
 - **RF-015**: Por defecto, el procesamiento del audio y la traducción DEBE ocurrir completamente en
   la computadora, sin conexión a internet y sin enviar audio ni texto fuera del equipo (modo sin
   internet).
 - **RF-015a**: La persona usuaria PUEDE activar a propósito un modo en línea, en el que el audio se
   envía a un servicio de traducción en internet. Este modo DEBE:
   - estar desactivado al instalar la app y cada vez que se abre;
-  - pedir confirmación la primera vez, con un aviso claro en español de que el audio saldrá del
-    equipo;
+  - pedir confirmación una sola vez por instalación, con un aviso claro en español de que el audio
+    saldrá del equipo. Si la persona no acepta, el aviso vuelve a salir la siguiente vez que
+    encienda el modo; una vez aceptado, ya no se repite;
   - mostrarse de forma visible mientras esté en uso, distinguible del modo sin internet;
-  - poder apagarse con una sola acción, volviendo al modo sin internet.
+  - poder apagarse con una sola acción, volviendo al modo sin internet;
+  - si todavía no hay cuenta configurada, pedir después del aviso la clave y la región del servicio
+    en un cuadro sencillo y guardarlas cifradas en el equipo, con la protección de datos de Windows
+    para el usuario actual. La clave nunca se muestra completa, nunca va en el instalador y nunca
+    sale del equipo, salvo hacia el propio servicio.
+- **RF-015c**: Si la persona cancela el cuadro de la cuenta, o el servicio rechaza la clave o la
+  región, la app DEBE quedarse en modo sin internet y mostrar un mensaje breve en español que diga
+  que el modo en línea no se pudo activar. En ese caso DEBE volver a pedir la cuenta la siguiente
+  vez que se encienda el modo en línea.
 - **RF-015b**: Si el modo en línea está activo y se pierde la conexión, la app DEBE avisar con un
   mensaje breve y seguir traduciendo en modo sin internet, sin que la persona tenga que reactivar la
   traducción.
@@ -201,7 +230,8 @@ traducción y la desactiva.
 - Traducir la voz propia (micrófono) o hablar la traducción en voz alta.
 - Identificar quién habla.
 - Configuraciones adicionales (tamaño de letra, colores, idioma de la interfaz) más allá de mover
-  la franja de subtítulos y encender o apagar el modo en línea.
+  la franja de subtítulos, encender o apagar el modo en línea y capturar la cuenta del modo en línea
+  (RF-015a).
 - Elegir entre varios servicios de traducción en internet; la v0 usa uno solo en el modo en línea.
 - Cambiar las teclas del atajo; en la v0 es fijo (Ctrl+Alt+T).
 - Varias cuentas o perfiles de usuario.
@@ -211,6 +241,8 @@ traducción y la desactiva.
 - **Estado de traducción**: activa o desactivada; empieza siempre desactivada.
 - **Modo de procesamiento**: sin internet (por defecto) o en línea (opcional, elegido por la
   persona); al abrir la app siempre empieza en sin internet.
+- **Cuenta del modo en línea**: la clave y la región del servicio de traducción en internet. Se
+  capturan una vez y se guardan cifradas en el equipo; solo se usan con el modo en línea encendido.
 - **Subtítulo**: un fragmento de texto en español de México que corresponde a lo último que se dijo
   en inglés; se muestra un tiempo y se reemplaza por el siguiente. No se guarda.
 
@@ -240,17 +272,26 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
   que se está escuchando.
 - **CA-009**: Lo que la persona dice por su micrófono durante una llamada no aparece en los
   subtítulos.
-- **CA-010**: La app se puede abrir, activar y desactivar usando solo el teclado.
+- **CA-010**: La app se puede abrir, activar, desactivar y mover la franja de subtítulos usando
+  solo el teclado.
 - **CA-011**: Con el wifi apagado y el cable de red desconectado, la app traduce un video en inglés
   igual que con conexión (cumple CA-001 y CA-002).
 - **CA-012**: Al abrir la app, la pantalla indica "sin internet". Para encender el modo en línea hay
-  que hacerlo a propósito y aceptar un aviso. Mientras está encendido se ve claramente, y al
-  apagarlo la app vuelve a indicar "sin internet".
+  que hacerlo a propósito y aceptar un aviso. La primera vez, la app pide la clave y la región del
+  servicio; con una clave inválida aparece un aviso en español y la app sigue en "sin internet".
+  Con una clave válida, el modo en línea se ve claramente encendido, y al apagarlo la app vuelve a
+  indicar "sin internet". Al cerrar y volver a abrir la app, la pantalla indica otra vez "sin
+  internet", y encender el modo en línea ya no muestra el aviso.
 - **CA-013**: Con el modo en línea encendido, al apagar el wifi aparece un aviso en español y los
   subtítulos siguen saliendo sin tener que reactivar nada.
 - **CA-014**: Con la app abierta y la ventana de una llamada o un video en pantalla completa al
   frente, presionar Ctrl+Alt+T activa la traducción; volver a presionarlo la desactiva. En ambos
   casos el cambio se ve en menos de 1 segundo y no hay que cambiar de ventana.
+- **CA-015**: Con la traducción activa, minimizar la ventana principal deja los subtítulos
+  saliendo; cerrarla con la X hace que los subtítulos y el ícono de la barra de tareas desaparezcan
+  en menos de 1 segundo.
+- **CA-016**: La app se puede abrir, activar, desactivar, mover la franja de subtítulos y encender o
+  apagar el modo en línea usando solo el mouse.
 
 ## Supuestos
 

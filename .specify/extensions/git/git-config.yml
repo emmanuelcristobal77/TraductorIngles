@@ -15,7 +15,7 @@ branch_template: ""
 branch_prefix: ""
 
 # Commit message used by `git commit` during repository initialization
-init_commit_message: "[Spec Kit] Initial commit"
+init_commit_message: "[Spec Kit] Commit inicial"
 
 # Commit message style used by auto-commit hooks (speckit.git.commit):
 # "fixed"        - default; use the configured/static messages below.
@@ -31,49 +31,49 @@ auto_commit:
   default: false
   before_clarify:
     enabled: false
-    message: "[Spec Kit] Save progress before clarification"
+    message: "[Spec Kit] Guarda avance antes de aclarar"
   before_plan:
     enabled: false
-    message: "[Spec Kit] Save progress before planning"
+    message: "[Spec Kit] Guarda avance antes de planear"
   before_tasks:
     enabled: false
-    message: "[Spec Kit] Save progress before task generation"
+    message: "[Spec Kit] Guarda avance antes de generar tareas"
   before_implement:
     enabled: false
-    message: "[Spec Kit] Save progress before implementation"
+    message: "[Spec Kit] Guarda avance antes de implementar"
   before_checklist:
     enabled: false
-    message: "[Spec Kit] Save progress before checklist"
+    message: "[Spec Kit] Guarda avance antes de la lista de revisión"
   before_analyze:
     enabled: false
-    message: "[Spec Kit] Save progress before analysis"
+    message: "[Spec Kit] Guarda avance antes del análisis"
   before_taskstoissues:
     enabled: false
-    message: "[Spec Kit] Save progress before issue sync"
+    message: "[Spec Kit] Guarda avance antes de sincronizar issues"
   after_constitution:
     enabled: false
-    message: "[Spec Kit] Add project constitution"
+    message: "[Spec Kit] Agrega la constitución del proyecto"
   after_specify:
     enabled: false
-    message: "[Spec Kit] Add specification"
+    message: "[Spec Kit] Agrega la especificación"
   after_clarify:
     enabled: false
-    message: "[Spec Kit] Clarify specification"
+    message: "[Spec Kit] Aclara la especificación"
   after_plan:
     enabled: false
-    message: "[Spec Kit] Add implementation plan"
+    message: "[Spec Kit] Agrega el plan de implementación"
   after_tasks:
     enabled: false
-    message: "[Spec Kit] Add tasks"
+    message: "[Spec Kit] Agrega las tareas"
   after_implement:
     enabled: false
-    message: "[Spec Kit] Implementation progress"
+    message: "[Spec Kit] Avance de implementación"
   after_checklist:
     enabled: false
-    message: "[Spec Kit] Add checklist"
+    message: "[Spec Kit] Agrega la lista de revisión"
   after_analyze:
     enabled: false
-    message: "[Spec Kit] Add analysis report"
+    message: "[Spec Kit] Agrega el reporte de análisis"
   after_taskstoissues:
     enabled: false
-    message: "[Spec Kit] Sync tasks to issues"
+    message: "[Spec Kit] Sincroniza tareas con issues"
