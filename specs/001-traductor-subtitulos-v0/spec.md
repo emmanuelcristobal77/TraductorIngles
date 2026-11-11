@@ -62,6 +62,15 @@ se activa solo cuando el usuario lo decide y se puede desactivar en cualquier mo
   la Historia 4 ya no dice "dado que la traducción está activa" (se contradecía con "la activa"), y
   RF-015b queda antes que RF-015c.
 
+### Enmienda 2026-11-10 (tras la validación de uso, paso B6)
+
+- P: ¿Los subtítulos deben verse encima de cualquier programa en pantalla completa? → R: Encima de
+  los programas de escritorio (navegadores, reproductores de escritorio, apps de llamadas). Las apps
+  de la Microsoft Store en pantalla completa (por ejemplo, el Reproductor multimedia o Películas y
+  TV) quedan fuera: Windows las pone en una capa por encima de toda ventana "siempre encima" y solo
+  una app firmada e instalada en Archivos de programa (UIAccess) puede quedar sobre ellas. En esas
+  apps se usa la ventana maximizada en lugar de pantalla completa (RF-008, CA-006).
+
 ## Escenarios de usuario y pruebas *(obligatorio)*
 
 ### Historia 1 — Subtítulos en español durante una llamada en inglés (Prioridad: P1)
@@ -216,7 +225,8 @@ traducción y la desactiva.
   las bocinas o audífonos de la computadora, sin importar qué aplicación o plataforma lo produce.
 - **RF-007**: La app DEBE traducir ese audio al español de México.
 - **RF-008**: La app DEBE mostrar la traducción como subtítulos: texto en una franja sobre las demás
-  ventanas (incluido un video en pantalla completa), en letra grande, alto contraste y no más de dos
+  ventanas (incluido un video en pantalla completa en un programa de escritorio; ver "Fuera de
+  alcance"), en letra grande, alto contraste y no más de dos
   líneas a la vez, renovándose conforme avanza lo que se dice.
 - **RF-009**: La persona usuaria DEBE poder mover la franja de subtítulos a otra parte de la
   pantalla para que no tape lo que necesita ver, de dos formas:
@@ -275,6 +285,9 @@ traducción y la desactiva.
   (RF-015a).
 - Elegir entre varios servicios de traducción en internet; la v0 usa uno solo en el modo en línea.
 - Cambiar las teclas del atajo; en la v0 es fijo (Ctrl+Alt+T).
+- Mostrar los subtítulos encima de una app de la Microsoft Store en pantalla completa (Reproductor
+  multimedia, Películas y TV); Windows no lo permite sin firmar la app (UIAccess). Con la ventana
+  maximizada sí se ven.
 - Varias cuentas o perfiles de usuario.
 
 ### Entidades clave
@@ -308,8 +321,8 @@ Todos se comprueban usando la app, sin leer código (Principio V de la constituc
   menos de 1 segundo.
 - **CA-005**: Funciona igual con al menos tres fuentes distintas: una llamada en línea, un video en
   el navegador y un audio en un reproductor de escritorio.
-- **CA-006**: Los subtítulos se ven encima de un video en pantalla completa y de la ventana de una
-  llamada.
+- **CA-006**: Los subtítulos se ven encima de un video en pantalla completa en el navegador y de la
+  ventana de una llamada.
 - **CA-007**: Al abrir la app y no activar nada, durante 1 minuto con un video en inglés sonando, no
   aparece ningún subtítulo.
 - **CA-008**: Activar o desactivar la traducción no corta, no pausa ni cambia el volumen del audio

@@ -76,6 +76,13 @@ Prepara antes: un video en inglés con habla clara en el navegador (10 frases co
 o nota de voz en inglés en un reproductor de escritorio, y una llamada de prueba con otra persona
 que hable en inglés.
 
+**Pasos automatizados**: `python scripts/validar_instalada.py` (con el entorno de desarrollo) corre
+sobre la app instalada la parte mecánica de B1, B2, B3, B5, B6 (navegador), B7, B8, B11a, B12
+(video), B13 y B13a, y deja los subtítulos de 10 frases para juzgar B4. Escribe
+`checklists/validacion-automatica.md`. Tarda unos 7 minutos, suena audio y toma el mouse y el
+teclado. Quedan a mano: B4 (juzgar), B9, B10, B11, B12 con la llamada, B14, B14a, B15, B16 a B19 y
+la prueba con personas nuevas.
+
 | Paso | Qué hacer | Qué debe pasar | Criterio |
 |---|---|---|---|
 | B1 | Busca "TraductorIngles" en el escritorio y ábrelo. | Se abre la ventana. Dice "Traducción desactivada" y "Sin internet". | RF-001, CA-012 |
@@ -83,7 +90,7 @@ que hable en inglés.
 | B3 | Presiona **Activar traducción**. | El botón cambia a "Desactivar traducción" y el estado a "Traducción activa". | RF-002, RF-005 |
 | B4 | Reproduce las 10 frases del video. | Aparecen subtítulos en español, de 2 líneas como máximo; entiendes al menos 8 de 10 frases. | CA-001 |
 | B5 | Cuenta mentalmente desde que termina cada una de 10 frases. | En al menos 9 de las 10, el subtítulo sale en 3 segundos o menos. | CA-002 |
-| B6 | Pon el video en pantalla completa. | Los subtítulos siguen encima. | CA-006 |
+| B6 | Pon el video del navegador en pantalla completa. | Los subtítulos siguen encima. (Con apps de la Microsoft Store en pantalla completa, como el Reproductor multimedia, no se ven; está fuera de alcance de la v0.) | CA-006 |
 | B7 | Pausa el video 10 s y luego reanúdalo. | En la pausa el subtítulo desaparece y no salen nuevos; al reanudar vuelven. | Historia 2 |
 | B8 | Arrastra la franja con el mouse a la parte de arriba. Luego presiona **Mover subtítulos**, muévela con las flechas a la izquierda y presiona Enter. | Las dos veces la franja se queda donde la dejaste; durante el modo de mover se ve resaltada con la instrucción. | RF-009 |
 | B9 | Repite B4 con el podcast y con la llamada. | Funciona igual con las tres fuentes. | CA-005 |
